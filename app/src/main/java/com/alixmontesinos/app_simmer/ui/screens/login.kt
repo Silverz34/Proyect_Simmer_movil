@@ -81,7 +81,7 @@ fun Login(){
                     fontFamily = ItimFont
                 )
 
-                Spacer(modifier = Modifier.height(49.dp))
+                Spacer(modifier = Modifier.height(45.dp))
 
                 Text("Somos una comunidad muy activa y solidaria, conócenos! ",
                     fontSize = 26.sp,
@@ -91,7 +91,7 @@ fun Login(){
 
                     )
 
-                Spacer(modifier = Modifier.height(80.dp))
+                Spacer(modifier = Modifier.height(50.dp))
 
                 Button(
                     onClick = { Log.d("Simmer", "Botón Iniciar Sesión presionado") },
