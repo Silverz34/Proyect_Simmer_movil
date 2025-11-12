@@ -14,7 +14,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             App_simmerTheme {
-                SplashScreen()
+                Login()
             }
         }
     }
