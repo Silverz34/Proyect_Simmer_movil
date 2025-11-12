@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import com.alixmontesinos.app_simmer.ui.screens.Login
 import com.alixmontesinos.app_simmer.ui.screens.SplashScreen
 import com.alixmontesinos.app_simmer.ui.theme.App_simmerTheme
+import com.alixmontesinos.app_simmer.ui.screens.Login
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,7 +16,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             App_simmerTheme {
-                SplashScreen()
+                Login()
+                //SplashScreen()
+
             }
         }
     }
