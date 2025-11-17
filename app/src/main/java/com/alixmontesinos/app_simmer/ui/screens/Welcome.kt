@@ -37,7 +37,7 @@ import com.alixmontesinos.app_simmer.ui.theme.YellowT
 
 @Preview
 @Composable
-fun Login(){
+fun Welcome(){
 
 
 

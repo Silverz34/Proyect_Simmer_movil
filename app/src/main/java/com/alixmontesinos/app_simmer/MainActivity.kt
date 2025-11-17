@@ -17,11 +17,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             App_simmerTheme {
                 Login()
-<<<<<<< HEAD
-=======
+                //Welcome()
                 //SplashScreen()
 
->>>>>>> d7b842a85bd19dc18d37e1cf14210565ae086425
             }
         }
     }
