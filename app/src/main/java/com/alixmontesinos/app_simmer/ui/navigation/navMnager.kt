@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.Perfil
 
 @Composable
 fun NavHostContainer(
@@ -33,9 +34,10 @@ fun NavHostContainer(
             composable(items_menu.Perfil.ruta) {
                 Perfil()
             }
-        }    }}
+        }
+    }
+}
 
 @Composable fun Home() { Text(text = "Pantalla de Inicio") }
 @Composable fun Crear() { Text(text = "Crear") }
 @Composable fun Favorit() { Text(text = "Favorit") }
-@Composable fun Perfil() { Text(text = "Perfil de Usuario") }
