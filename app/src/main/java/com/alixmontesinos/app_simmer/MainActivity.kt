@@ -4,6 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
+import com.alixmontesinos.app_simmer.ui.navigation.MainScreen
 import com.alixmontesinos.app_simmer.ui.screens.Login
 import com.alixmontesinos.app_simmer.ui.screens.SplashScreen
 import com.alixmontesinos.app_simmer.ui.theme.App_simmerTheme
@@ -16,9 +21,15 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             App_simmerTheme {
-                Login()
-                //Welcome()
-                //SplashScreen()
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    //Register()
+                    //Login()
+                    MainScreen()
+                    //SplashScreen()
+                }
 
             }
         }
