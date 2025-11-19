@@ -27,8 +27,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     //Register()
                     //Login()
-                    MainScreen()
-                    //SplashScreen()
+                    //MainScreen()
+                    SplashScreen()
                 }
 
             }
