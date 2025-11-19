@@ -44,5 +44,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 fun GreetingPreview() {
     App_simmerTheme {
         Greeting("Android")
+        //hola
     }
 }
