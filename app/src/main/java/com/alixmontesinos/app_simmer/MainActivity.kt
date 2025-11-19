@@ -15,6 +15,10 @@ import com.alixmontesinos.app_simmer.ui.theme.App_simmerTheme
 import com.alixmontesinos.app_simmer.ui.screens.Login
 
 
+
+
+
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +31,9 @@ class MainActivity : ComponentActivity() {
                 ) {
                     //Register()
                     //Login()
-                    //MainScreen()
-                    SplashScreen()
+                    MainScreen()
+                    //SplashScreen()
+
                 }
 
             }
