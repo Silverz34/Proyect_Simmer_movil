@@ -12,3 +12,4 @@ val Pink40 = Color(0xFF7D5260)
 
 val YellowT = Color(0xFFFFC533)
 
+val BlancoCard = Color(0xFFFBFAF8)

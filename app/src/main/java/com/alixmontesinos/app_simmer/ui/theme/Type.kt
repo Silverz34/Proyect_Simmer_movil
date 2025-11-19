@@ -51,3 +51,7 @@ val MontserratSemiregularFond = FontFamily(
 val MontserratsemiBoldFond = FontFamily(
     Font(R.font.montserrasemibold, FontWeight.Bold)
 )
+
+val NunitoSansSemiBold = FontFamily(
+    Font(R.font.nunitosemibold)
+)

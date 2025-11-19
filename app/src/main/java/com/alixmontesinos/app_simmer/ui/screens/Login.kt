@@ -2,20 +2,25 @@ package com.alixmontesinos.app_simmer.ui.screens
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import com.alixmontesinos.app_simmer.R
 import com.alixmontesinos.app_simmer.ui.theme.ItimFont
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +44,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 
 import com.alixmontesinos.app_simmer.ui.components.FlechaRegreso
+import com.alixmontesinos.app_simmer.ui.theme.BlancoCard
 import com.alixmontesinos.app_simmer.ui.theme.MontserratsemiBoldFond
 import com.alixmontesinos.app_simmer.ui.theme.YellowT
 
@@ -69,9 +74,10 @@ fun Login() {
 
             Text(modifier = Modifier.padding(top = 40.dp, start = 60.dp),
                 text = "Inicio de \nsesión",
-                fontSize = 50.sp,
+                fontSize = 60.sp,
                 lineHeight = 50.sp,
-                fontFamily = ItimFont
+                fontFamily = ItimFont,
+                color = Color.Black
             )
 
             Spacer(modifier = Modifier.padding(top = 40.dp, start = 60.dp))
@@ -79,9 +85,10 @@ fun Login() {
             Text(
                 modifier = Modifier.padding(horizontal = 60.dp),
                 text = "Bienvenido, ingresa para ver las recetas del dia",
-                fontSize = 25.sp,
+                fontSize = 33.sp,
                 lineHeight = 30.sp,
                 fontFamily = ItimFont,
+                color = Color.Black
             )
         }
 
@@ -91,42 +98,104 @@ fun Login() {
                 topEnd = 50.dp,
                 bottomStart = 0.dp,
                 bottomEnd = 0.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White)
+            colors = CardDefaults.cardColors(containerColor = BlancoCard)
         )
         {
-            Column (modifier = Modifier.padding(40.dp).fillMaxWidth())
+            Column (modifier = Modifier.padding(50.dp).fillMaxWidth())
             {
                 var Username by remember { mutableStateOf("") }
                 TextField(
-                    modifier = Modifier.align(CenterHorizontally).fillMaxWidth().height(100.dp).padding(top = 20.dp,bottom = 20.dp),
+                    modifier = Modifier.align(CenterHorizontally)
+                        .fillMaxWidth().height(100.dp)
+                        .padding(top = 20.dp,bottom = 20.dp)
+                        .border(width = 2.dp, color = Color.Black, shape = RoundedCornerShape(16.dp)),
                     shape = RoundedCornerShape(16.dp),
                     value = Username,
                     onValueChange = { Username = it },
-                    placeholder = { Text("Nombre de Usuario", fontSize = 20.sp) },
-                    colors = TextFieldDefaults.colors(
+                    textStyle = LocalTextStyle.current.copy(
+                        fontSize = 20.sp,
+                        color = Color.Black),
+                    placeholder = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.icon_user),
+                                contentDescription = "Nombre de Usuario",
+                                tint = Color.Gray,
+                                modifier = Modifier.size(22.dp)
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Text(
+                                "Nombre de Usuario",
+                                fontSize = 20.sp,
+                                color = Color.Gray
+                            )
+                        }
+                    },                    colors = TextFieldDefaults.colors(
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent
+                        disabledIndicatorColor = Color.Transparent,
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
                     )
                 )
 
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
                 var Contraseña by remember { mutableStateOf("") }
                 TextField(
-                    modifier = Modifier.align(CenterHorizontally).fillMaxWidth().height(100.dp).padding(top = 20.dp,bottom = 20.dp),
+                    modifier = Modifier
+                        .align(CenterHorizontally)
+                        .fillMaxWidth()
+                        .height(100.dp)
+                        .padding(top = 20.dp, bottom = 20.dp)
+                        .border(width = 2.dp, color = Color.Black, shape = RoundedCornerShape(16.dp)),
+
                     shape = RoundedCornerShape(16.dp),
+
                     value = Contraseña,
                     onValueChange = { Contraseña = it },
-                    placeholder = { Text("Contraseña", fontSize = 20.sp) },
+
+                    textStyle = LocalTextStyle.current.copy(
+                        fontSize = 20.sp,
+                        color = Color.Black
+                    ),
+                    placeholder = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.candadito),
+                                contentDescription = "Contraseña",
+                                tint = Color.Gray,
+                                modifier = Modifier.size(22.dp)
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Text(
+                                "Contraseña",
+                                fontSize = 20.sp,
+                                color = Color.Gray
+                            )
+                        }
+                    },
                     colors = TextFieldDefaults.colors(
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent
+                        disabledIndicatorColor = Color.Transparent,
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
                     )
-
-
                 )
+
 
                 Spacer(modifier = Modifier.height(60.dp))
 

@@ -13,6 +13,7 @@ import com.alixmontesinos.app_simmer.ui.screens.Login
 import com.alixmontesinos.app_simmer.ui.screens.SplashScreen
 import com.alixmontesinos.app_simmer.ui.theme.App_simmerTheme
 import com.alixmontesinos.app_simmer.ui.screens.Login
+import com.alixmontesinos.app_simmer.ui.screens.registrer
 
 
 class MainActivity : ComponentActivity() {
@@ -25,9 +26,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //Register()
+                    registrer()
                     //Login()
-                    MainScreen()
+                    //MainScreen()
                     //SplashScreen()
                 }
 
