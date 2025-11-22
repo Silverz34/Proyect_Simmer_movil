@@ -44,9 +44,9 @@ import com.alixmontesinos.app_simmer.ui.theme.MontserratsemiBoldFond
 import com.alixmontesinos.app_simmer.ui.theme.YellowT
 
 
-@Preview
+
 @Composable
-fun Login() {
+fun Login(onBackClick: () -> Unit) {
 
     Box(modifier = Modifier.fillMaxWidth()) {
 
@@ -57,7 +57,7 @@ fun Login() {
             contentScale = ContentScale.Crop
         )
 
-        FlechaRegreso()
+        FlechaRegreso(onBackClick = onBackClick)
 
 
 

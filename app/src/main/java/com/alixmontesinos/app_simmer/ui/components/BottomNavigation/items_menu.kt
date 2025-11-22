@@ -22,6 +22,7 @@ sealed class items_menu(
         R.drawable.icon_user,
         "Perfil", "Perfil"
     )
+
 }
 val items = listOf(
     items_menu.Home,
