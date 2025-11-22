@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.alixmontesinos.app_simmer.R
 import com.alixmontesinos.app_simmer.ui.components.FlechaRegreso
-
+import com.alixmontesinos.app_simmer.ui.components.FotoPerfilUniversal
 
 
 val YellowHeader = Color(0xFFFFCA28)
@@ -95,29 +95,11 @@ fun HeaderSection(onBackClick: () -> Unit) {
 @Composable
 fun ProfilePhoto() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Box(contentAlignment = Alignment.Center) {
-
-            Box(
-                modifier = Modifier
-                    .size(120.dp)
-                    .clip(CircleShape)
-                    .background(Color.LightGray)
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.profile),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
-
-            }
-            Icon(
-                imageVector = Icons.Default.PhotoCamera,
-                contentDescription = "Cambiar cámara",
-                tint = Color.White,
-                modifier = Modifier.size(32.dp)
-            )
-        }
+        FotoPerfilUniversal(
+            size = 120.dp,
+            hasBorder = false,
+            showCameraIcon = true
+        )
         Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = "Cambiar foto",

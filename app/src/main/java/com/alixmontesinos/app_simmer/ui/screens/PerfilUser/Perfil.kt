@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.alixmontesinos.app_simmer.ui.components.FotoPerfilUniversal
 
 @Composable
 fun Perfil(
@@ -112,15 +113,12 @@ fun ProfileHeader() {
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
-            modifier = Modifier
-                .offset(y = (-50).dp)
-                .size(100.dp)
-                .clip(CircleShape)
-                .border(4.dp, Color.White, CircleShape)
-                .background(Color(0xFFE0E0E0))
+        FotoPerfilUniversal(
+            modifier = Modifier.offset(y = (-50).dp),
+            size = 100.dp,
+            hasBorder = true,
+            showCameraIcon = false
         )
-
         Text(
             text = "Alix M",
             fontSize = 24.sp,
