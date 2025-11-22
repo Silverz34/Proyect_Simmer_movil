@@ -38,18 +38,15 @@ import androidx.navigation.Navigation
 import com.alixmontesinos.app_simmer.ui.components.FotoPerfilUniversal
 
 @Composable
-fun Perfil(
-           onNotificationClick: () -> Unit = {},
-           onEditClick: () -> Unit) {
+fun Perfil(onEditClick: () -> Unit) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize() ,
+                    horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ProfileTopBar(
-                onNotificationClick = onNotificationClick
-            )
+            ProfileTopBar()
 
             ProfileHeader()
 
@@ -71,40 +68,15 @@ fun Perfil(
 }
 
 @Composable
-fun ProfileTopBar(
-    onNotificationClick: () -> Unit
-) {
+fun ProfileTopBar() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding( horizontal = 20.dp)
-            .height(180.dp)
-            .background(Color(0xFFFFA726),
+            .height(150.dp)
+            .background(Color(0xFFFFCA28),
              shape = RoundedCornerShape(20.dp))
-    ) {
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-
-
-            IconButton(
-                onClick = onNotificationClick,
-                modifier = Modifier
-                    .size(40.dp)
-                    .background(Color.White, CircleShape)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Notifications,
-                    contentDescription = "Notificaciones",
-                    tint = Color.Black
-                )
-            }
-        }
-    }
+    ) {}
 }
 
 @Composable
@@ -204,13 +176,11 @@ fun EditProfileButton(onEditClick: () -> Unit) {
     Button(
         onClick = onEditClick,
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 32.dp)
             .height(50.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xFFFFC107)
         ),
-        shape = RoundedCornerShape(25.dp)
+        shape = RoundedCornerShape(45.dp)
     ) {
         Icon(
             imageVector = Icons.Default.Edit,
