@@ -50,9 +50,9 @@ import com.alixmontesinos.app_simmer.ui.theme.NunitoSansSemiBold
 import com.alixmontesinos.app_simmer.ui.theme.YellowT
 
 
-@Preview
+
 @Composable
-fun registrer (){
+fun registrer (onBackClick: () -> Unit){
 
     Box(modifier = Modifier.fillMaxWidth().fillMaxWidth()) {
         Image(
@@ -62,7 +62,7 @@ fun registrer (){
             contentScale = ContentScale.Crop
         )
 
-        FlechaRegreso()
+        FlechaRegreso(onBackClick = onBackClick)
 
 
         Column(modifier = Modifier.fillMaxWidth().padding(top = 100.dp, bottom = 200.dp)) {

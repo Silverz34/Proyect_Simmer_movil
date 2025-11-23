@@ -26,10 +26,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    registrer()
+                    //registrer()
                     //Login()
                     //MainScreen()
                     //SplashScreen()
+
                 }
 
             }
