@@ -3,6 +3,7 @@ package com.alixmontesinos.app_simmer.ui.screens
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,16 +43,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.navigation.NavController
 
 import com.alixmontesinos.app_simmer.ui.components.FlechaRegreso
+import com.alixmontesinos.app_simmer.ui.navigation.OtrasRutas
 import com.alixmontesinos.app_simmer.ui.theme.BlancoCard
+import com.alixmontesinos.app_simmer.ui.theme.MontserratSemiregularFond
 import com.alixmontesinos.app_simmer.ui.theme.MontserratsemiBoldFond
 import com.alixmontesinos.app_simmer.ui.theme.YellowT
 
 
 
 @Composable
-fun Login(onBackClick: () -> Unit) {
+fun Login(navController: NavController) {
 
     Box(modifier = Modifier.fillMaxWidth()) {
 
@@ -62,7 +67,7 @@ fun Login(onBackClick: () -> Unit) {
             contentScale = ContentScale.Crop
         )
 
-        FlechaRegreso(onBackClick = onBackClick)
+        FlechaRegreso(navController)
 
 
 
@@ -92,7 +97,7 @@ fun Login(onBackClick: () -> Unit) {
             )
         }
 
-        Card (modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(450.dp),
+        Card (modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(480.dp),
             shape = RoundedCornerShape(
                 topStart = 50.dp,
                 topEnd = 50.dp,
@@ -145,7 +150,7 @@ fun Login(onBackClick: () -> Unit) {
                     )
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(15.dp))
 
                 var Contraseña by remember { mutableStateOf("") }
                 TextField(
@@ -197,10 +202,10 @@ fun Login(onBackClick: () -> Unit) {
                 )
 
 
-                Spacer(modifier = Modifier.height(60.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
-                    onClick = { Log.d("Simmer", "Botón Iniciar Sesión presionado") },
+                    onClick = {/*Todo*/},
                     modifier = Modifier.width(230.dp).height(60.dp)
                         .align(Alignment.CenterHorizontally),
                     shape = RoundedCornerShape(16.dp),
@@ -217,10 +222,27 @@ fun Login(onBackClick: () -> Unit) {
                         color = YellowT
                     )
                 }
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(25.dp))
 
-                Text("¿No tienes cuenta pa? Aki Crea tu cuenta", fontFamily = MontserratsemiBoldFond)
+                Row (Modifier.align(CenterHorizontally)){
+                    Text(
+                        text = "¿No tienes una cuenta?",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = Color.Black
 
+                    )
+
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = "Registrate aquí",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = YellowT,
+                        textDecoration = TextDecoration.Underline,
+                        modifier = Modifier.clickable { navController.navigate(OtrasRutas.Register.route) }
+                    )
+                }
             }
         }
     }

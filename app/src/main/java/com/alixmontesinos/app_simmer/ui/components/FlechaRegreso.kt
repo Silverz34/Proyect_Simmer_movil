@@ -20,11 +20,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 
 @Composable
 fun FlechaRegreso(
-    onBackClick: () -> Unit
+    navController: NavController
 ) {
     Box(
         modifier = Modifier
@@ -32,7 +33,7 @@ fun FlechaRegreso(
             .size(50.dp)
             .shadow(6.dp, CircleShape)
             .background(Color.White, CircleShape)
-            .clickable { onBackClick()},
+            .clickable {  navController.popBackStack()},
         contentAlignment = Alignment.Center
     ) {
         Icon(

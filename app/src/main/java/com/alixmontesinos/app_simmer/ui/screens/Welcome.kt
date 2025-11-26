@@ -29,15 +29,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.alixmontesinos.app_simmer.R
+import com.alixmontesinos.app_simmer.ui.navigation.OtrasRutas
 import com.alixmontesinos.app_simmer.ui.theme.ItimFont
 import com.alixmontesinos.app_simmer.ui.theme.NunitoSans
 import com.alixmontesinos.app_simmer.ui.theme.YellowT
 
 
-@Preview
+
 @Composable
-fun Welcome(){
+fun Welcome(navController: NavController){
 
 
 
@@ -94,7 +96,7 @@ fun Welcome(){
                 Spacer(modifier = Modifier.height(50.dp))
 
                 Button(
-                    onClick = { Log.d("Simmer", "Botón Iniciar Sesión presionado") },
+                    onClick = {navController.navigate(OtrasRutas.Login.route)},
                     modifier = Modifier.width(230.dp).height(60.dp).align(Alignment.CenterHorizontally),
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(
@@ -113,7 +115,7 @@ fun Welcome(){
                 Spacer(modifier = Modifier.height(40.dp))
 
                 Button(
-                    onClick = { Log.d("Simmer", "Botón Iniciar Sesión presionado") },
+                    onClick = { navController.navigate(route = OtrasRutas.Register.route) },
                     modifier = Modifier.width(230.dp).height(60.dp).align(Alignment.CenterHorizontally),
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(

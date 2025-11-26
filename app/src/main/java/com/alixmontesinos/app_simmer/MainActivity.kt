@@ -8,12 +8,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
+import com.alixmontesinos.app_simmer.ui.navigation.AppPrueba
 import com.alixmontesinos.app_simmer.ui.navigation.MainScreen
+import com.alixmontesinos.app_simmer.ui.navigation.NavHostContainer
 import com.alixmontesinos.app_simmer.ui.screens.Login
 import com.alixmontesinos.app_simmer.ui.screens.SplashScreen
 import com.alixmontesinos.app_simmer.ui.theme.App_simmerTheme
 import com.alixmontesinos.app_simmer.ui.screens.Login
-import com.alixmontesinos.app_simmer.ui.screens.registrer
+import com.alixmontesinos.app_simmer.ui.screens.Register
+import com.alixmontesinos.app_simmer.ui.screens.Welcome
 
 
 class MainActivity : ComponentActivity() {
@@ -26,6 +30,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    //NavHostContainer()
+                AppPrueba()
+                //Welcome()
                     //registrer()
                     //Login()
                     //MainScreen()

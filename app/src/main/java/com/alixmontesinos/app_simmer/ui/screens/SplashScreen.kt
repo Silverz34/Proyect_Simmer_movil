@@ -8,19 +8,36 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.alixmontesinos.app_simmer.R
+import com.alixmontesinos.app_simmer.ui.navigation.OtrasRutas
+import kotlinx.coroutines.delay
 
+@Composable
+fun SplashScreen2(navController: NavHostController){
+
+    LaunchedEffect(key1 = true){
+        delay(5000)
+        navController.popBackStack()
+        navController.navigate(OtrasRutas.Welcome.route)
+
+    }
+    SplashScreen()
+}
 @Composable
 fun SplashScreen() {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -35,7 +52,8 @@ fun SplashScreen() {
             text = "simmer",
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = 150.dp) // Puedes ajustar esta distancia
+                .padding(top = 150.dp), // Puedes ajustar esta distancia
+            color = Color.Black
         )
 
         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.logo_animation))

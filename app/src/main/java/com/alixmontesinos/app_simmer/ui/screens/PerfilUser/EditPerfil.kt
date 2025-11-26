@@ -46,7 +46,7 @@ val BackgroundGray = Color(0xFFF5F5F5)
 val TextGray = Color(0xFF8E8E93)
 val TextBlack = Color(0xFF1C1C1E)
 val LinkBlue = Color(0xFF2196F3)
-
+/*
 @Composable
 fun EditarPerfil(onBackClick: () -> Unit){
     Column(
@@ -198,4 +198,4 @@ fun ProfileInfoRow(label: String, value: String) {
             fontSize = 15.sp
         )
     }
-}
+}*/

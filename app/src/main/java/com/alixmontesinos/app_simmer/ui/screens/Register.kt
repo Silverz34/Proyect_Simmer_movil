@@ -38,21 +38,21 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.alixmontesinos.app_simmer.R
 import com.alixmontesinos.app_simmer.ui.components.FlechaRegreso
+import com.alixmontesinos.app_simmer.ui.navigation.OtrasRutas
 import com.alixmontesinos.app_simmer.ui.theme.ItimFont
 import com.alixmontesinos.app_simmer.ui.theme.MontserratsemiBoldFond
-import com.alixmontesinos.app_simmer.ui.theme.NunitoSans
 import com.alixmontesinos.app_simmer.ui.theme.NunitoSansSemiBold
 import com.alixmontesinos.app_simmer.ui.theme.YellowT
 
 
 
 @Composable
-fun registrer (onBackClick: () -> Unit){
+fun Register (navController: NavController){
 
     Box(modifier = Modifier.fillMaxWidth().fillMaxWidth()) {
         Image(
@@ -62,7 +62,7 @@ fun registrer (onBackClick: () -> Unit){
             contentScale = ContentScale.Crop
         )
 
-        FlechaRegreso(onBackClick = onBackClick)
+        FlechaRegreso(navController)
 
 
         Column(modifier = Modifier.fillMaxWidth().padding(top = 100.dp, bottom = 200.dp)) {
@@ -86,7 +86,7 @@ fun registrer (onBackClick: () -> Unit){
 
         }
         Card(
-            modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(550.dp),
+            modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(650.dp),
             shape = RoundedCornerShape(
                 topStart = 50.dp,
                 topEnd = 50.dp,
@@ -96,8 +96,8 @@ fun registrer (onBackClick: () -> Unit){
             colors = CardDefaults.cardColors(containerColor = Color.White)
         )
         {
-            val scrollstate = rememberScrollState()
-            Column(modifier = Modifier.padding(50.dp).fillMaxWidth().verticalScroll(scrollstate))
+
+            Column(modifier = Modifier.padding(50.dp).fillMaxWidth())
             {
                 var Username by remember { mutableStateOf("") }
                 TextField(
@@ -317,7 +317,7 @@ fun registrer (onBackClick: () -> Unit){
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
-                    onClick = { Log.d("Simmer", "Botón Iniciar Sesión presionado") },
+                    onClick = {navController.navigate(route= OtrasRutas.Login.route)},
                     modifier = Modifier.width(230.dp).height(60.dp)
                         .align(Alignment.CenterHorizontally),
                     shape = RoundedCornerShape(16.dp),
@@ -327,20 +327,13 @@ fun registrer (onBackClick: () -> Unit){
 
                     ) {
                     Text(
-                        text = "Iniciar sesión",
+                        text = "Registrarse",
                         fontSize = 25.sp,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.Medium,
                         color = YellowT
                     )
                 }
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(
-                    "¿No tienes cuenta pa? Aki Crea tu cuenta",
-                    fontFamily = MontserratsemiBoldFond
-                )
-
             }
 
         }

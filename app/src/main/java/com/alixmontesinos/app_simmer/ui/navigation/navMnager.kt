@@ -11,8 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.EditarPerfil
+import com.alixmontesinos.app_simmer.ui.screens.Login
+//import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.EditarPerfil
 import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.Perfil
+import com.alixmontesinos.app_simmer.ui.screens.Register
+import com.alixmontesinos.app_simmer.ui.screens.Welcome
 
 @Composable
 fun NavHostContainer(
@@ -21,7 +24,7 @@ fun NavHostContainer(
     Box(modifier = Modifier.padding(padding)) {
         NavHost(
             navController = navController,
-            startDestination = items_menu.Home.ruta
+            startDestination = Welcome(navController)
         ) {
             composable(items_menu.Home.ruta) {
                 Home()
@@ -40,12 +43,23 @@ fun NavHostContainer(
                 )
             }
 
-            composable(OtrasRutas.EditarPerfil){
+            /*composable(route = OtrasRutas.EditarPerfil.route){
                 EditarPerfil(
                     onBackClick = {
                         navController.popBackStack()
                     }
                 )
+            }*/
+
+            composable (route = OtrasRutas.Welcome.route){
+                Welcome(navController)
+            }
+
+            composable(route = OtrasRutas.Login.route){
+                Login(navController)
+            }
+            composable(route = OtrasRutas.Register.route){
+                Register(navController)
             }
         }
     }
