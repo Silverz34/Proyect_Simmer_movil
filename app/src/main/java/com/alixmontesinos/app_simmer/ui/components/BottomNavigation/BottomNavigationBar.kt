@@ -60,7 +60,6 @@ fun BottomNavigationBar(navController: NavHostController) {
                                 popUpTo(navController.graph.startDestinationRoute!!) {
                                     saveState = true
                                 }
-                                var launchSingleTop = true
                                 restoreState = true
                             }
                         }

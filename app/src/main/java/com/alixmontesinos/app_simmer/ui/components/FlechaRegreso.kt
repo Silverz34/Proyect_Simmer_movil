@@ -21,16 +21,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@Preview
+
 @Composable
-fun FlechaRegreso() {
+fun FlechaRegreso(
+    onBackClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .padding(top = 70.dp, start = 40.dp)
             .size(50.dp)
             .shadow(6.dp, CircleShape)
             .background(Color.White, CircleShape)
-            .clickable { },
+            .clickable { onBackClick()},
         contentAlignment = Alignment.Center
     ) {
         Icon(
