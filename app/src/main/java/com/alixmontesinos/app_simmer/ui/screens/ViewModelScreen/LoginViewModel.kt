@@ -43,7 +43,6 @@ class LoginViewModel : ViewModel() {
     private fun validateUsername(username: String): String? {
         return when {
             username.isBlank() -> "El usuario no puede estar vacío"
-            username.length < 4 -> "Mínimo 4 caracteres"
             else -> null
         }
     }
@@ -51,7 +50,6 @@ class LoginViewModel : ViewModel() {
     private fun validatePassword(password: String): String? {
         return when {
             password.isBlank() -> "La contraseña no puede estar vacía"
-            password.length < 6 -> "Mínimo 6 caracteres"
             else -> null
         }
     }

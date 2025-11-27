@@ -52,32 +52,39 @@ import com.alixmontesinos.app_simmer.ui.theme.BlancoCard
 import com.alixmontesinos.app_simmer.ui.theme.MontserratSemiregularFond
 import com.alixmontesinos.app_simmer.ui.theme.MontserratsemiBoldFond
 import com.alixmontesinos.app_simmer.ui.theme.YellowT
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.alixmontesinos.app_simmer.ui.login.LoginViewModel
 
 
 
 @Composable
-fun Login(navController: NavController) {
+fun Login(
+    navController: NavController,
+    viewModel: LoginViewModel = viewModel()
+) {
+    val state = viewModel.uiState
 
     Box(modifier = Modifier.fillMaxWidth()) {
 
         Image(
             painter = painterResource(id = R.drawable.splash_background),
             contentDescription = "Fondo de la pantalla ",
-            modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
             contentScale = ContentScale.Crop
         )
 
         FlechaRegreso(navController)
 
-
-
-        Column (
+        Column(
             modifier = Modifier
                 .padding(top = 120.dp, bottom = 200.dp)
                 .fillMaxWidth()
-        ){
+        ) {
 
-            Text(modifier = Modifier.padding(top = 40.dp, start = 60.dp),
+            Text(
+                modifier = Modifier.padding(top = 40.dp, start = 60.dp),
                 text = "Inicio de \nsesión",
                 fontSize = 60.sp,
                 lineHeight = 50.sp,
@@ -97,29 +104,44 @@ fun Login(navController: NavController) {
             )
         }
 
-        Card (modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(480.dp),
+        Card(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .height(480.dp),
             shape = RoundedCornerShape(
                 topStart = 50.dp,
                 topEnd = 50.dp,
                 bottomStart = 0.dp,
-                bottomEnd = 0.dp),
+                bottomEnd = 0.dp
+            ),
             colors = CardDefaults.cardColors(containerColor = BlancoCard)
-        )
-        {
-            Column (modifier = Modifier.padding(50.dp).fillMaxWidth())
-            {
-                var Username by remember { mutableStateOf("") }
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(50.dp)
+                    .fillMaxWidth()
+            ) {
+
+                // ───────────── CAMPO USUARIO ─────────────
                 TextField(
-                    modifier = Modifier.align(CenterHorizontally)
-                        .fillMaxWidth().height(100.dp)
-                        .padding(top = 20.dp,bottom = 20.dp)
-                        .border(width = 2.dp, color = Color.Black, shape = RoundedCornerShape(16.dp)),
+                    modifier = Modifier
+                        .align(CenterHorizontally)
+                        .fillMaxWidth()
+                        .height(100.dp)
+                        .padding(top = 20.dp, bottom = 20.dp)
+                        .border(
+                            width = 2.dp,
+                            color = Color.Black,
+                            shape = RoundedCornerShape(16.dp)
+                        ),
                     shape = RoundedCornerShape(16.dp),
-                    value = Username,
-                    onValueChange = { Username = it },
+                    value = state.username,                           // 👈 lee del ViewModel
+                    onValueChange = { viewModel.onUsernameChange(it) }, // 👈 avisa al ViewModel
                     textStyle = LocalTextStyle.current.copy(
                         fontSize = 20.sp,
-                        color = Color.Black),
+                        color = Color.Black
+                    ),
                     placeholder = {
                         Row(
                             verticalAlignment = Alignment.CenterVertically
@@ -139,7 +161,8 @@ fun Login(navController: NavController) {
                                 color = Color.Gray
                             )
                         }
-                    },                    colors = TextFieldDefaults.colors(
+                    },
+                    colors = TextFieldDefaults.colors(
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
                         disabledIndicatorColor = Color.Transparent,
@@ -150,22 +173,32 @@ fun Login(navController: NavController) {
                     )
                 )
 
+                // Mensaje de error de usuario (si aplica)
+                if (state.usernameError != null) {
+                    Text(
+                        text = state.usernameError!!,
+                        color = Color.Red,
+                        fontSize = 14.sp
+                    )
+                }
+
                 Spacer(modifier = Modifier.height(15.dp))
 
-                var Contraseña by remember { mutableStateOf("") }
+                // ───────────── CAMPO CONTRASEÑA ─────────────
                 TextField(
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .fillMaxWidth()
                         .height(100.dp)
                         .padding(top = 20.dp, bottom = 20.dp)
-                        .border(width = 2.dp, color = Color.Black, shape = RoundedCornerShape(16.dp)),
-
+                        .border(
+                            width = 2.dp,
+                            color = Color.Black,
+                            shape = RoundedCornerShape(16.dp)
+                        ),
                     shape = RoundedCornerShape(16.dp),
-
-                    value = Contraseña,
-                    onValueChange = { Contraseña = it },
-
+                    value = state.password,                             // 👈 del ViewModel
+                    onValueChange = { viewModel.onPasswordChange(it) }, // 👈 al ViewModel
                     textStyle = LocalTextStyle.current.copy(
                         fontSize = 20.sp,
                         color = Color.Black
@@ -201,19 +234,38 @@ fun Login(navController: NavController) {
                     )
                 )
 
+                // Mensaje de error de contraseña (si aplica)
+                if (state.passwordError != null) {
+                    Text(
+                        text = state.passwordError!!,
+                        color = Color.Red,
+                        fontSize = 14.sp
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(20.dp))
 
+                // ───────────── BOTÓN INICIAR SESIÓN ─────────────
                 Button(
-                    onClick = {/*Todo*/},
-                    modifier = Modifier.width(230.dp).height(60.dp)
+                    onClick = {
+                        val ok = viewModel.tryLogin()
+                        if (ok) {
+                            // TODO: cambia "home" por tu ruta real, por ejemplo:
+                            // navController.navigate(OtrasRutas.Home.route)
+                            navController.navigate("home")
+                        }
+                    },
+                    enabled = viewModel.isFormValid(),  // 👈 solo si campos válidos
+                    modifier = Modifier
+                        .width(230.dp)
+                        .height(60.dp)
                         .align(Alignment.CenterHorizontally),
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Black
+                        containerColor = Color.Black,
+                        disabledContainerColor = Color.Gray // opcional: botón gris si inválido
                     ),
-
-                    ) {
+                ) {
                     Text(
                         text = "Iniciar sesión",
                         fontSize = 25.sp,
@@ -222,29 +274,31 @@ fun Login(navController: NavController) {
                         color = YellowT
                     )
                 }
+
                 Spacer(modifier = Modifier.height(25.dp))
 
-                Row (Modifier.align(CenterHorizontally)){
+                Row(Modifier.align(CenterHorizontally)) {
                     Text(
                         text = "¿No tienes una cuenta?",
                         fontSize = 15.sp,
                         fontWeight = FontWeight.ExtraBold,
                         color = Color.Black
-
                     )
 
                     Spacer(modifier = Modifier.width(10.dp))
+
                     Text(
                         text = "Registrate aquí",
                         fontSize = 15.sp,
                         fontWeight = FontWeight.ExtraBold,
                         color = YellowT,
                         textDecoration = TextDecoration.Underline,
-                        modifier = Modifier.clickable { navController.navigate(OtrasRutas.Register.route) }
+                        modifier = Modifier.clickable {
+                            navController.navigate(OtrasRutas.Register.route)
+                        }
                     )
                 }
             }
         }
     }
 }
-

@@ -46,6 +46,7 @@ fun NavHostContainer(
             /*composable(route = OtrasRutas.EditarPerfil.route){
                 EditarPerfil(
                     onBackClick = {
+
                         navController.popBackStack()
                     }
                 )
