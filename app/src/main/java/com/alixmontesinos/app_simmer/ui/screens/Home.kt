@@ -109,7 +109,7 @@ fun TopBarSection() {
                     .background(Color.White, shape = RoundedCornerShape(12.dp))
                     .size(56.dp)
             ) {
-                Icon(painter = painterResource(id = R.drawable.ic_filter), contentDescription = "Filtro", tint = Color.Black)
+                Icon(painter = painterResource(id = R.drawable.ic_filter), contentDescription = "Filtro")
             }
         }
     }
@@ -129,9 +129,11 @@ fun CategoriesSection() {
         Spacer(modifier = Modifier.height(12.dp))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             val categories = listOf(
-                "Dinner" to R.drawable.category_dinner,
-                "Lunch" to R.drawable.category_lunch,
-                "Breakfast" to R.drawable.category_breakfast
+                "Cena" to R.drawable.category_dinner,
+                "Comida" to R.drawable.category_lunch,
+                "Desayuno" to R.drawable.category_breakfast,
+                "Postres" to R.drawable.category_dessert,
+                "Snack" to R.drawable.category_snack
             )
             items(categories) { (name, imageRes) ->
                 CategoryCard(name = name, imageRes = imageRes)
