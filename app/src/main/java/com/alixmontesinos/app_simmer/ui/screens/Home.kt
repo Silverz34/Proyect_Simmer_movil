@@ -2,15 +2,18 @@ package com.alixmontesinos.app_simmer.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
@@ -31,6 +34,7 @@ import com.alixmontesinos.app_simmer.R
 import com.alixmontesinos.app_simmer.ui.ViewModel.Category
 import com.alixmontesinos.app_simmer.ui.ViewModel.HomeViewModel
 import com.alixmontesinos.app_simmer.ui.ViewModel.Recipe
+import kotlinx.coroutines.launch
 
 val YellowHeader = Color(0xFFFFC93A)
 val BackgroundColor = Color(0xFFFDFCF7)
@@ -42,8 +46,10 @@ fun Home(homeViewModel: HomeViewModel = viewModel()) {
     val categories by homeViewModel.categories.collectAsStateWithLifecycle()
     val popularRecipes by homeViewModel.popularRecipes.collectAsStateWithLifecycle()
 
+    var showBottomSheet by remember { mutableStateOf(false) }
+
     Scaffold(
-        topBar = { TopBarSection() },
+        topBar = { TopBarSection(onFilterClick = { showBottomSheet = true }) },
         containerColor = BackgroundColor
     ) { paddingValues ->
         if (isLoading) {
@@ -60,11 +66,15 @@ fun Home(homeViewModel: HomeViewModel = viewModel()) {
             }
         }
     }
+
+    if (showBottomSheet) {
+        FilterBottomSheet(onDismiss = { showBottomSheet = false })
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarSection() {
+fun TopBarSection(onFilterClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -121,61 +131,133 @@ fun TopBarSection() {
                 singleLine = true
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Box {
-                var expanded by remember { mutableStateOf(false) }
-                IconButton(
-                    onClick = { expanded = true },
-                    modifier = Modifier
-                        .background(Color.White, shape = RoundedCornerShape(12.dp))
-                        .size(56.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.FilterList,
-                        contentDescription = "Filtro"
-                    )
-                }
-                DropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false }
-                ) {
-                    DropdownMenuItem(
-                        text = { Text("Tiempo", fontWeight = FontWeight.Bold) },
-                        onClick = {}
-                    )
-                    DropdownMenuItem(
-                        text = { Text("30 min") },
-                        onClick = { expanded = false }
-                    )
-                    DropdownMenuItem(
-                        text = { Text("15 min") },
-                        onClick = { expanded = false }
-                    )
-                    DropdownMenuItem(
-                        text = { Text("1 h") },
-                        onClick = { expanded = false }
-                    )
-                    Divider()
-                    DropdownMenuItem(
-                        text = { Text("Dificultad", fontWeight = FontWeight.Bold) },
-                        onClick = { }
-                    )
-                    DropdownMenuItem(
-                        text = { Text("Fácil") },
-                        onClick = { expanded = false }
-                    )
-                    DropdownMenuItem(
-                        text = { Text("Media") },
-                        onClick = { expanded = false }
-                    )
-                    DropdownMenuItem(
-                        text = { Text("Difícil") },
-                        onClick = { expanded = false }
-                    )
-                }
+            IconButton(
+                onClick = onFilterClick,
+                modifier = Modifier
+                    .background(Color.White, shape = RoundedCornerShape(12.dp))
+                    .size(56.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.FilterList,
+                    contentDescription = "Filtro"
+                )
             }
         }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FilterBottomSheet(onDismiss: () -> Unit) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
+
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = sheetState,
+        containerColor = BackgroundColor
+    ) {
+        val timeOptions = listOf("30 min", "15 min", "1 h")
+        val (selectedTime, onTimeSelected) = remember { mutableStateOf<String?>(null) }
+
+        val difficultyOptions = listOf("Fácil", "Media", "Difícil")
+        val (selectedDifficulty, onDifficultySelected) = remember { mutableStateOf<String?>(null) }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            // Header
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.FilterList, contentDescription = "Filter Icon", tint = Color.Black)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Filtros", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Color.Black)
+                }
+                IconButton(onClick = onDismiss) {
+                    Icon(Icons.Default.Close, contentDescription = "Close", tint = Color.Gray)
+                }
+            }
+            Divider(modifier = Modifier.padding(vertical = 16.dp))
+
+            // Filter Groups
+            FilterGroup(
+                title = "Tiempo",
+                options = timeOptions,
+                selectedOption = selectedTime,
+                onOptionSelected = onTimeSelected
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            FilterGroup(
+                title = "Dificultad",
+                options = difficultyOptions,
+                selectedOption = selectedDifficulty,
+                onOptionSelected = onDifficultySelected
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            // Apply Button
+            Button(
+                onClick = {
+                    scope.launch { sheetState.hide() }.invokeOnCompletion {
+                        if (!sheetState.isVisible) {
+                            onDismiss()
+                        }
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = YellowHeader)
+            ) {
+                Text("Aplicar", color = Color.Black, fontWeight = FontWeight.Bold)
+            }
+        }
+    }
+}
+
+@Composable
+fun FilterGroup(
+    title: String,
+    options: List<String>,
+    selectedOption: String?,
+    onOptionSelected: (String) -> Unit
+) {
+    Column {
+        Text(text = title, fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color.Black)
+        Spacer(modifier = Modifier.height(8.dp))
+        options.forEach { option ->
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .selectable(
+                        selected = (option == selectedOption),
+                        onClick = { onOptionSelected(option) }
+                    )
+                    .padding(vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = (option == selectedOption),
+                    onClick = { onOptionSelected(option) },
+                    colors = RadioButtonDefaults.colors(
+                        selectedColor = YellowHeader,
+                        unselectedColor = Color.Gray
+                    )
+                )
+                Text(text = option, modifier = Modifier.padding(start = 8.dp), color = Color.Black)
+            }
+        }
+    }
+}
+
 
 @Composable
 fun CategoriesSection(categories: List<Category>) {
