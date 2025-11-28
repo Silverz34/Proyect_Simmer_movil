@@ -12,7 +12,7 @@ import androidx.navigation.compose.composable
 import com.alixmontesinos.app_simmer.ui.screens.Crear
 import com.alixmontesinos.app_simmer.ui.screens.Favorit
 import com.alixmontesinos.app_simmer.ui.screens.Home
-import com.alixmontesinos.app_simmer.ui.screens.Perfil
+import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.Perfil
 
 @Composable
 fun NavHostContainer(
@@ -34,7 +34,7 @@ fun NavHostContainer(
             Favorit()
         }
         composable(items_menu.Perfil.ruta) {
-            Perfil()
+            Perfil(onEditClick = {})
         }
     }
 }

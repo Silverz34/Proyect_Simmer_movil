@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
@@ -24,22 +25,39 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.alixmontesinos.app_simmer.R
+import com.alixmontesinos.app_simmer.ui.ViewModel.Category
+import com.alixmontesinos.app_simmer.ui.ViewModel.HomeViewModel
+import com.alixmontesinos.app_simmer.ui.ViewModel.Recipe
 
 val YellowHeader = Color(0xFFFFC93A)
 val BackgroundColor = Color(0xFFFDFCF7)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Home() {
+fun Home(homeViewModel: HomeViewModel = viewModel()) {
+    val isLoading by homeViewModel.isLoading.collectAsStateWithLifecycle()
+    val categories by homeViewModel.categories.collectAsStateWithLifecycle()
+    val popularRecipes by homeViewModel.popularRecipes.collectAsStateWithLifecycle()
+
     Scaffold(
         topBar = { TopBarSection() },
         containerColor = BackgroundColor
     ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
-            CategoriesSection()
-            // Se le da un peso para que ocupe el espacio restante
-            PopularRecipesSection(modifier = Modifier.weight(1f))
+        if (isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else {
+            Column(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
+                CategoriesSection(categories)
+                PopularRecipesSection(popularRecipes, modifier = Modifier.weight(1f))
+            }
         }
     }
 }
@@ -103,20 +121,64 @@ fun TopBarSection() {
                 singleLine = true
             )
             Spacer(modifier = Modifier.width(8.dp))
-            IconButton(
-                onClick = { /* Acción de filtro */ },
-                modifier = Modifier
-                    .background(Color.White, shape = RoundedCornerShape(12.dp))
-                    .size(56.dp)
-            ) {
-                Icon(painter = painterResource(id = R.drawable.ic_filter), contentDescription = "Filtro")
+            Box {
+                var expanded by remember { mutableStateOf(false) }
+                IconButton(
+                    onClick = { expanded = true },
+                    modifier = Modifier
+                        .background(Color.White, shape = RoundedCornerShape(12.dp))
+                        .size(56.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.FilterList,
+                        contentDescription = "Filtro"
+                    )
+                }
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    DropdownMenuItem(
+                        text = { Text("Tiempo", fontWeight = FontWeight.Bold) },
+                        onClick = {}
+                    )
+                    DropdownMenuItem(
+                        text = { Text("30 min") },
+                        onClick = { expanded = false }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("15 min") },
+                        onClick = { expanded = false }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("1 h") },
+                        onClick = { expanded = false }
+                    )
+                    Divider()
+                    DropdownMenuItem(
+                        text = { Text("Dificultad", fontWeight = FontWeight.Bold) },
+                        onClick = { }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Fácil") },
+                        onClick = { expanded = false }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Media") },
+                        onClick = { expanded = false }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Difícil") },
+                        onClick = { expanded = false }
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun CategoriesSection() {
+fun CategoriesSection(categories: List<Category>) {
     Column(modifier = Modifier.padding(16.dp)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -128,15 +190,8 @@ fun CategoriesSection() {
         }
         Spacer(modifier = Modifier.height(12.dp))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            val categories = listOf(
-                "Cena" to R.drawable.category_dinner,
-                "Comida" to R.drawable.category_lunch,
-                "Desayuno" to R.drawable.category_breakfast,
-                "Postres" to R.drawable.category_dessert,
-                "Snack" to R.drawable.category_snack
-            )
-            items(categories) { (name, imageRes) ->
-                CategoryCard(name = name, imageRes = imageRes)
+            items(categories) { category ->
+                CategoryCard(name = category.name, imageRes = category.imageRes)
             }
         }
     }
@@ -163,25 +218,20 @@ fun CategoryCard(name: String, imageRes: Int) {
 }
 
 @Composable
-fun PopularRecipesSection(modifier: Modifier = Modifier) {
+fun PopularRecipesSection(recipes: List<Recipe>, modifier: Modifier = Modifier) {
     Column(modifier = modifier.padding(horizontal = 16.dp)) {
         Text(text = "Recetas populares", fontSize = 20.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(12.dp))
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            // Se elimina la altura fija para que la cuadrícula llene el espacio disponible
             modifier = Modifier.fillMaxSize(),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(bottom = 16.dp)
         ) {
-            val recipes = listOf(
-                "Huevito con arroz", "Pollo a la brasa", "Lomo Saltado", "Causa Limeña",
-                "Aji de Gallina", "Ceviche"
-            )
-            items(recipes) { recipeName ->
-                RecipeCard(name = recipeName)
+            items(recipes) { recipe ->
+                RecipeCard(name = recipe.name)
             }
         }
     }

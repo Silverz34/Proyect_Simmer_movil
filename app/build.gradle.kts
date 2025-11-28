@@ -68,4 +68,5 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.coil.compose)
     implementation(libs.androidx.compose.material3.v112)
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
 }
