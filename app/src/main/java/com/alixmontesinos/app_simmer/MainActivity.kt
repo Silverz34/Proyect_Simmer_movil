@@ -30,14 +30,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //NavHostContainer()
-                AppPrueba()
-                //Welcome()
-                    //registrer()
-                    //Login()
-                    //MainScreen()
-                    //SplashScreen()
-
+                    MainScreen()
                 }
 
             }

@@ -12,6 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.alixmontesinos.app_simmer.ui.screens.Login
+import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.EditarPerfil
 //import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.EditarPerfil
 import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.Perfil
 import com.alixmontesinos.app_simmer.ui.screens.Register
@@ -26,21 +27,7 @@ fun NavHostContainer(
             navController = navController,
             startDestination = Welcome(navController)
         ) {
-            composable(items_menu.Home.ruta) {
-                Home()
-            }
-            composable(items_menu.Crear.ruta) {
-                Crear()
-            }
-            composable(items_menu.Favorit.ruta) {
-                Favorit()
-            }
-            composable(items_menu.Perfil.ruta) {
-                Perfil(
-                    onEditClick = {(OtrasRutas.EditarPerfil)}
-                )
-            }
-
+            //navegacion sin bottombar
             composable (route = OtrasRutas.Welcome.route){
                 Welcome(navController)
             }
@@ -51,6 +38,23 @@ fun NavHostContainer(
             composable(route = OtrasRutas.Register.route){
                 Register(navController)
             }
+
+            //vistas con BottomBar
+            composable(items_menu.Home.ruta) {Home()}
+            composable(items_menu.Crear.ruta) {Crear()}
+            composable(items_menu.Favorit.ruta) {Favorit()}
+            composable(items_menu.Perfil.ruta) {
+                Perfil(
+                    onEditClick = {navController.navigate(OtrasRutas.EditarPerfil)}
+                )
+            }
+
+            composable(route = OtrasRutas.EditarPerfil.route) {
+                EditarPerfil(
+                   /* onBackClick = { navController.popBackStack() }*/
+                )
+            }
+
         }
     }
 }
