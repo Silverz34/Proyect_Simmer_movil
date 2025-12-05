@@ -25,7 +25,7 @@ fun NavHostContainer(
     Box(modifier = Modifier.padding(padding)) {
         NavHost(
             navController = navController,
-            startDestination = Welcome(navController)
+            startDestination = OtrasRutas.Welcome.route
         ) {
             //navegacion sin bottombar
             composable (route = OtrasRutas.Welcome.route){
@@ -45,13 +45,13 @@ fun NavHostContainer(
             composable(items_menu.Favorit.ruta) {Favorit()}
             composable(items_menu.Perfil.ruta) {
                 Perfil(
-                    onEditClick = {navController.navigate(OtrasRutas.EditarPerfil)}
+                    onEditClick = { navController.navigate(OtrasRutas.EditarPerfil.route) }
                 )
             }
 
             composable(route = OtrasRutas.EditarPerfil.route) {
                 EditarPerfil(
-                   /* onBackClick = { navController.popBackStack() }*/
+                   onBackClick = { navController.popBackStack() }
                 )
             }
 
