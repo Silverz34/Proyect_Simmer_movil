@@ -62,7 +62,7 @@ fun Register (navController: NavController){
             contentScale = ContentScale.Crop
         )
 
-        FlechaRegreso(navController)
+        FlechaRegreso(onBackClick = { navController.popBackStack() })
 
 
         Column(modifier = Modifier.fillMaxWidth().padding(top = 100.dp, bottom = 200.dp)) {
@@ -317,7 +317,7 @@ fun Register (navController: NavController){
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
-                    onClick = {navController.navigate(route= OtrasRutas.Login.route)},
+                    onClick = {navController.navigate(OtrasRutas.Login.route)},
                     modifier = Modifier.width(230.dp).height(60.dp)
                         .align(Alignment.CenterHorizontally),
                     shape = RoundedCornerShape(16.dp),
