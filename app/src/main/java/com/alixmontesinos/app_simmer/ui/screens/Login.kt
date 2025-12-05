@@ -53,6 +53,7 @@ import com.alixmontesinos.app_simmer.ui.theme.MontserratSemiregularFond
 import com.alixmontesinos.app_simmer.ui.theme.MontserratsemiBoldFond
 import com.alixmontesinos.app_simmer.ui.theme.YellowT
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.alixmontesinos.app_simmer.ui.components.BottomNavigation.items_menu
 import com.alixmontesinos.app_simmer.ui.login.LoginViewModel
 
 
@@ -75,7 +76,7 @@ fun Login(
             contentScale = ContentScale.Crop
         )
 
-        FlechaRegreso(navController)
+        FlechaRegreso(onBackClick = { navController.popBackStack() })
 
         Column(
             modifier = Modifier
@@ -250,9 +251,10 @@ fun Login(
                     onClick = {
                         val ok = viewModel.tryLogin()
                         if (ok) {
-                            // TODO: cambia "home" por tu ruta real, por ejemplo:
-                            // navController.navigate(OtrasRutas.Home.route)
+                            navController.navigate(items_menu.Home.ruta)
                             navController.navigate("home")
+                            /*para no poder volver a login en caso de estar ya en home
+                            * popUpTo(OtrasRutas.Welcome.route) { inclusive = true }*/
                         }
                     },
                     enabled = viewModel.isFormValid(),  // 👈 solo si campos válidos
