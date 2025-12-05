@@ -37,20 +37,9 @@ fun NavHostContainer(
             }
             composable(items_menu.Perfil.ruta) {
                 Perfil(
-                    onEditClick = {
-                        navController.navigate(OtrasRutas.EditarPerfil)
-                    }
+                    onEditClick = {(OtrasRutas.EditarPerfil)}
                 )
             }
-
-            /*composable(route = OtrasRutas.EditarPerfil.route){
-                EditarPerfil(
-                    onBackClick = {
-
-                        navController.popBackStack()
-                    }
-                )
-            }*/
 
             composable (route = OtrasRutas.Welcome.route){
                 Welcome(navController)

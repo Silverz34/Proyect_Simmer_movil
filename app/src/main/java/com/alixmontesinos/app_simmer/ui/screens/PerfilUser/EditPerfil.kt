@@ -46,9 +46,9 @@ val BackgroundGray = Color(0xFFF5F5F5)
 val TextGray = Color(0xFF8E8E93)
 val TextBlack = Color(0xFF1C1C1E)
 val LinkBlue = Color(0xFF2196F3)
-/*
+
 @Composable
-fun EditarPerfil(onBackClick: () -> Unit){
+fun EditarPerfil(){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -56,7 +56,7 @@ fun EditarPerfil(onBackClick: () -> Unit){
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        HeaderSection(onBackClick = onBackClick)
+        HeaderSection()
         Spacer(modifier = Modifier.height(24.dp))
         ProfilePhoto()
         Spacer(modifier = Modifier.height(32.dp))
@@ -68,7 +68,7 @@ fun EditarPerfil(onBackClick: () -> Unit){
 }
 
 @Composable
-fun HeaderSection(onBackClick: () -> Unit) {
+fun HeaderSection() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -78,7 +78,7 @@ fun HeaderSection(onBackClick: () -> Unit) {
                 shape = RoundedCornerShape(bottomStart = 40.dp, bottomEnd = 40.dp)
             )
     ) {
-        FlechaRegreso(onBackClick = onBackClick)
+        //FlechaRegreso()
 
         Text(
             text = "Edición del perfil",
@@ -198,4 +198,4 @@ fun ProfileInfoRow(label: String, value: String) {
             fontSize = 15.sp
         )
     }
-}*/
+}
