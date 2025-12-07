@@ -9,7 +9,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 data class Category(val name: String, val imageRes: Int)
-data class Recipe(val name: String)
+
+// Updated Recipe data class for Home screen
+data class Recipe(
+    val name: String,
+    val description: String,
+    val imageRes: Int // We'll use a placeholder for now
+)
 
 class HomeViewModel : ViewModel() {
 
@@ -39,13 +45,14 @@ class HomeViewModel : ViewModel() {
                 Category("Snack", R.drawable.category_snack)
             )
 
+            // Updated popular recipes with more data
             _popularRecipes.value = listOf(
-                Recipe("Huevito con arroz"),
-                Recipe("Pollo a la brasa"),
-                Recipe("Lomo Saltado"),
-                Recipe("Causa Limeña"),
-                Recipe("Aji de Gallina"),
-                Recipe("Ceviche")
+                Recipe("Huevito con arroz", "Una pequeña receta...", R.drawable.rigatoni_pasta),
+                Recipe("Pollo a la brasa", "Clásico peruano", R.drawable.rigatoni_pasta),
+                Recipe("Lomo Saltado", "Salteado de carne", R.drawable.rigatoni_pasta),
+                Recipe("Causa Limeña", "Plato típico", R.drawable.rigatoni_pasta),
+                Recipe("Aji de Gallina", "Cremoso y delicioso", R.drawable.rigatoni_pasta),
+                Recipe("Ceviche", "Pescado fresco marinado", R.drawable.rigatoni_pasta)
             )
 
             _isLoading.value = false

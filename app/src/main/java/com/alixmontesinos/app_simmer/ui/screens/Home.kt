@@ -313,24 +313,26 @@ fun PopularRecipesSection(recipes: List<Recipe>, modifier: Modifier = Modifier) 
             contentPadding = PaddingValues(bottom = 16.dp)
         ) {
             items(recipes) { recipe ->
-                RecipeCard(name = recipe.name)
+                PopularRecipeItem(recipe = recipe)
             }
         }
     }
 }
 
 @Composable
-fun RecipeCard(name: String) {
+fun PopularRecipeItem(recipe: Recipe) {
     Column {
-        Box(
+        Image(
+            painter = painterResource(id = recipe.imageRes),
+            contentDescription = recipe.name,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(180.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .background(Color.LightGray)
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = name, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-        Text(text = "Una pequeña receta...", color = Color.Gray, fontSize = 12.sp)
+        Text(text = recipe.name, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+        Text(text = recipe.description, color = Color.Gray, fontSize = 12.sp)
     }
 }
