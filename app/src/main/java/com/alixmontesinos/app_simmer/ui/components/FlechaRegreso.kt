@@ -3,6 +3,7 @@ package com.alixmontesinos.app_simmer.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -17,13 +18,13 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun FlechaRegreso(
-    modifier: Modifier = Modifier,
     onBackClick: () -> Unit
 ) {
     Box(
-        modifier = modifier
-            .size(40.dp)
-            .shadow(4.dp, CircleShape)
+        modifier = Modifier
+            .padding(top = 40.dp, start = 50.dp)
+            .size(50.dp)
+            .shadow(6.dp, CircleShape)
             .background(Color.White, CircleShape)
             .clickable { onBackClick() },
         contentAlignment = Alignment.Center

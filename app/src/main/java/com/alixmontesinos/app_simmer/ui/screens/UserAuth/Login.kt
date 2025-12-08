@@ -1,6 +1,5 @@
-package com.alixmontesinos.app_simmer.ui.screens
+package com.alixmontesinos.app_simmer.ui.screens.UserAuth
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -29,17 +28,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alixmontesinos.app_simmer.R
 import com.alixmontesinos.app_simmer.ui.theme.ItimFont
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -49,13 +50,10 @@ import androidx.navigation.NavController
 import com.alixmontesinos.app_simmer.ui.components.FlechaRegreso
 import com.alixmontesinos.app_simmer.ui.navigation.OtrasRutas
 import com.alixmontesinos.app_simmer.ui.theme.BlancoCard
-import com.alixmontesinos.app_simmer.ui.theme.MontserratSemiregularFond
-import com.alixmontesinos.app_simmer.ui.theme.MontserratsemiBoldFond
 import com.alixmontesinos.app_simmer.ui.theme.YellowT
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.alixmontesinos.app_simmer.ui.components.BottomNavigation.items_menu
-import com.alixmontesinos.app_simmer.ui.login.LoginViewModel
-
+import com.alixmontesinos.app_simmer.ui.screens.ViewModelScreen.LoginViewModel
 
 
 @Composable
@@ -124,12 +122,14 @@ fun Login(
                     .fillMaxWidth()
             ) {
 
+                // Estado para la visibilidad de la contraseña
+                var passwordVisible by remember { mutableStateOf(false) }
+
                 // ───────────── CAMPO USUARIO ─────────────
                 TextField(
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .fillMaxWidth()
-                        .height(100.dp)
                         .padding(top = 20.dp, bottom = 20.dp)
                         .border(
                             width = 2.dp,
@@ -148,7 +148,7 @@ fun Login(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
-                                painter = painterResource(id = R.drawable.icon_user),
+                                painter = painterResource(id = R.drawable.email),
                                 contentDescription = "Nombre de Usuario",
                                 tint = Color.Gray,
                                 modifier = Modifier.size(22.dp)
@@ -157,7 +157,7 @@ fun Login(
                             Spacer(modifier = Modifier.width(8.dp))
 
                             Text(
-                                "Nombre de Usuario",
+                                "Correo electronico",
                                 fontSize = 20.sp,
                                 color = Color.Gray
                             )
@@ -171,7 +171,8 @@ fun Login(
                         unfocusedContainerColor = Color.White,
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black,
-                    )
+                    ),
+                    singleLine = true
                 )
 
                 // Mensaje de error de usuario (si aplica)
@@ -190,7 +191,6 @@ fun Login(
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .fillMaxWidth()
-                        .height(100.dp)
                         .padding(top = 20.dp, bottom = 20.dp)
                         .border(
                             width = 2.dp,
@@ -232,7 +232,18 @@ fun Login(
                         unfocusedContainerColor = Color.White,
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black,
-                    )
+                    ),
+                    singleLine = true,
+                    visualTransformation = if (passwordVisible) androidx.compose.ui.text.input.VisualTransformation.None else androidx.compose.ui.text.input.PasswordVisualTransformation(),
+                    trailingIcon = {
+                        val image = if (passwordVisible)
+                             androidx.compose.material.icons.Icons.Filled.Visibility
+                        else androidx.compose.material.icons.Icons.Filled.VisibilityOff
+
+                        androidx.compose.material3.IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                            Icon(imageVector = image, contentDescription = if (passwordVisible) "Ocultar contraseña" else "Mostrar contraseña")
+                        }
+                    }
                 )
 
                 // Mensaje de error de contraseña (si aplica)
@@ -243,38 +254,58 @@ fun Login(
                         fontSize = 14.sp
                     )
                 }
+                
+                // Mensaje de error de login (si aplica)
+                if (state.loginError != null) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                     Text(
+                        text = state.loginError!!,
+                        color = Color.Red,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.align(CenterHorizontally)
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(20.dp))
 
                 // ───────────── BOTÓN INICIAR SESIÓN ─────────────
                 Button(
                     onClick = {
-                        val ok = viewModel.tryLogin()
-                        if (ok) {
-                            navController.navigate(items_menu.Home.ruta)
-                            navController.navigate("home")
-                            /*para no poder volver a login en caso de estar ya en home
-                            * popUpTo(OtrasRutas.Welcome.route) { inclusive = true }*/
-                        }
+                        viewModel.tryLogin()
                     },
-                    enabled = viewModel.isFormValid(),  // 👈 solo si campos válidos
+                    enabled = viewModel.isFormValid() && !state.isLoading,
                     modifier = Modifier
                         .width(230.dp)
                         .height(60.dp)
-                        .align(Alignment.CenterHorizontally),
+                        .align(CenterHorizontally),
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Black,
-                        disabledContainerColor = Color.Gray // opcional: botón gris si inválido
+                        disabledContainerColor = Color.Gray
                     ),
                 ) {
-                    Text(
-                        text = "Iniciar sesión",
-                        fontSize = 25.sp,
-                        fontFamily = FontFamily.SansSerif,
-                        fontWeight = FontWeight.Medium,
-                        color = YellowT
-                    )
+                    if (state.isLoading) {
+                         androidx.compose.material3.CircularProgressIndicator(color = YellowT)
+                    } else {
+                        Text(
+                            text = "Iniciar sesión",
+                            fontSize = 25.sp,
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.Medium,
+                            color = YellowT
+                        )
+                    }
+                }
+
+                // Efecto para navegar cuando el login es exitoso
+                androidx.compose.runtime.LaunchedEffect(state.isSuccess) {
+                    if (state.isSuccess) {
+                        navController.navigate(items_menu.Home.ruta) {
+                            popUpTo(OtrasRutas.Welcome.route) { inclusive = true }
+                        }
+                        viewModel.onLoginSuccessConsumed()
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(25.dp))

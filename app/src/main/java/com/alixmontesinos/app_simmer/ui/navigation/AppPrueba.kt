@@ -4,11 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.alixmontesinos.app_simmer.ui.screens.Login
-import com.alixmontesinos.app_simmer.ui.screens.Register
-import com.alixmontesinos.app_simmer.ui.screens.SplashScreen
+import com.alixmontesinos.app_simmer.ui.screens.UserAuth.Login
+import com.alixmontesinos.app_simmer.ui.screens.UserAuth.Register
 import com.alixmontesinos.app_simmer.ui.screens.SplashScreen2
-import com.alixmontesinos.app_simmer.ui.screens.Welcome
+import com.alixmontesinos.app_simmer.ui.screens.UserApp.CrearReceta
+import com.alixmontesinos.app_simmer.ui.screens.UserApp.Home
+import com.alixmontesinos.app_simmer.ui.screens.UserAuth.Welcome
 
 @Composable
 fun AppPrueba(){
@@ -27,5 +28,14 @@ fun AppPrueba(){
         composable(route = OtrasRutas.Register.route){
             Register(navController)
         }
+
+        composable (route= OtrasRutas.CrearReceta.route){
+            CrearReceta(onBackClick = { navController.popBackStack() })
+        }
+
+        composable (route= OtrasRutas.Home.route){
+            Home(onBackClick = { navController.popBackStack() })
+        }
+
     }
 }

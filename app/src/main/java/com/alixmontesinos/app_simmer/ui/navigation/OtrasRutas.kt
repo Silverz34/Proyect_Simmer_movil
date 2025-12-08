@@ -8,4 +8,9 @@ sealed class OtrasRutas(val route:String){
     object Welcome:OtrasRutas ("Welcome")
     object Login:OtrasRutas ("Login")
     object Register: OtrasRutas("Register")
+    object CrearReceta: OtrasRutas("CrearReceta")
+
+    object Home: OtrasRutas(items_menu.Home.ruta)
+
+
 }

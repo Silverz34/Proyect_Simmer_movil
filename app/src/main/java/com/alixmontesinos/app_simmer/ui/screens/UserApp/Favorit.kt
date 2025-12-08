@@ -1,4 +1,4 @@
-package com.alixmontesinos.app_simmer.ui.screens
+package com.alixmontesinos.app_simmer.ui.screens.UserApp
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -73,7 +73,7 @@ fun FavoriteTopBar() {
             contentAlignment = Alignment.Center
         ) {
             FlechaRegreso(
-                modifier = Modifier.align(Alignment.CenterStart),
+
                 onBackClick = { /* Handle back navigation */ }
             )
             Text(

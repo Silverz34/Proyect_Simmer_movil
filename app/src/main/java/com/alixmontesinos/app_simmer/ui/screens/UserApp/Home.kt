@@ -1,8 +1,7 @@
-package com.alixmontesinos.app_simmer.ui.screens
+package com.alixmontesinos.app_simmer.ui.screens.UserApp
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -28,7 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.alixmontesinos.app_simmer.R
 import com.alixmontesinos.app_simmer.ui.ViewModel.Category
@@ -42,33 +41,11 @@ val BackgroundColor = Color(0xFFFDFCF7)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home(homeViewModel: HomeViewModel = viewModel()) {
-    val isLoading by homeViewModel.isLoading.collectAsStateWithLifecycle()
-    val categories by homeViewModel.categories.collectAsStateWithLifecycle()
-    val popularRecipes by homeViewModel.popularRecipes.collectAsStateWithLifecycle()
-
-    var showBottomSheet by remember { mutableStateOf(false) }
-
-    Scaffold(
-        topBar = { TopBarSection(onFilterClick = { showBottomSheet = true }) },
-        containerColor = BackgroundColor
-    ) { paddingValues ->
-        if (isLoading) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            Column(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
-                CategoriesSection(categories)
-                PopularRecipesSection(popularRecipes, modifier = Modifier.weight(1f))
-            }
-        }
-    }
-
-    if (showBottomSheet) {
-        FilterBottomSheet(onDismiss = { showBottomSheet = false })
+    androidx.compose.foundation.layout.Box(
+        modifier = androidx.compose.ui.Modifier.fillMaxSize(),
+        contentAlignment = androidx.compose.ui.Alignment.Center
+    ) {
+         androidx.compose.material3.Text("Home Works - Debug Mode")
     }
 }
 
@@ -288,8 +265,8 @@ fun CategoryCard(name: String, imageRes: Int) {
             .clip(RoundedCornerShape(16.dp)),
         contentAlignment = Alignment.Center
     ) {
-        Image(
-            painter = painterResource(id = imageRes),
+        coil.compose.AsyncImage(
+            model = imageRes,
             contentDescription = name,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
@@ -322,8 +299,8 @@ fun PopularRecipesSection(recipes: List<Recipe>, modifier: Modifier = Modifier) 
 @Composable
 fun PopularRecipeItem(recipe: Recipe) {
     Column {
-        Image(
-            painter = painterResource(id = recipe.imageRes),
+        coil.compose.AsyncImage(
+            model = recipe.imageRes,
             contentDescription = recipe.name,
             contentScale = ContentScale.Crop,
             modifier = Modifier

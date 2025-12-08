@@ -1,6 +1,5 @@
-package com.alixmontesinos.app_simmer.ui.screens
+package com.alixmontesinos.app_simmer.ui.screens.UserAuth
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -13,9 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -30,6 +27,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -45,18 +46,21 @@ import com.alixmontesinos.app_simmer.R
 import com.alixmontesinos.app_simmer.ui.components.FlechaRegreso
 import com.alixmontesinos.app_simmer.ui.navigation.OtrasRutas
 import com.alixmontesinos.app_simmer.ui.theme.ItimFont
-import com.alixmontesinos.app_simmer.ui.theme.MontserratsemiBoldFond
 import com.alixmontesinos.app_simmer.ui.theme.NunitoSansSemiBold
 import com.alixmontesinos.app_simmer.ui.theme.YellowT
 
 
 
 @Composable
-fun Register (navController: NavController){
+fun Register (
+    navController: NavController,
+    viewModel: com.alixmontesinos.app_simmer.ui.screens.ViewModelScreen.RegisterViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+){
+    val state = viewModel.uiState
 
     Box(modifier = Modifier.fillMaxWidth().fillMaxWidth()) {
         Image(
-            painter = painterResource(id = com.alixmontesinos.app_simmer.R.drawable.splash_background),
+            painter = painterResource(id = R.drawable.splash_background),
             contentDescription = "Fondo de la pantalla ",
             modifier = Modifier.fillMaxWidth().fillMaxHeight(),
             contentScale = ContentScale.Crop
@@ -99,10 +103,10 @@ fun Register (navController: NavController){
 
             Column(modifier = Modifier.padding(50.dp).fillMaxWidth())
             {
-                var Username by remember { mutableStateOf("") }
+                // CAMPO USUARIO
                 TextField(
                     modifier = Modifier.align(CenterHorizontally)
-                        .fillMaxWidth().height(100.dp)
+                        .fillMaxWidth()
                         .padding(top = 20.dp, bottom = 20.dp)
                         .border(
                             width = 2.dp,
@@ -110,8 +114,8 @@ fun Register (navController: NavController){
                             shape = RoundedCornerShape(16.dp)
                         ),
                     shape = RoundedCornerShape(16.dp),
-                    value = Username,
-                    onValueChange = { Username = it },
+                    value = state.username,
+                    onValueChange = { viewModel.onUsernameChange(it) },
                     textStyle = LocalTextStyle.current.copy(
                         fontSize = 20.sp,
                         color = Color.Black
@@ -143,17 +147,21 @@ fun Register (navController: NavController){
                         unfocusedContainerColor = Color.White,
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black,
-                    )
+                    ),
+                    singleLine = true
                 )
+
+                if (state.usernameError != null) {
+                    Text(text = state.usernameError!!, color = Color.Red, fontSize = 14.sp)
+                }
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                var Email by remember { mutableStateOf("") }
+                // CAMPO EMAIL
                 TextField(
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .fillMaxWidth()
-                        .height(100.dp)
                         .padding(top = 20.dp, bottom = 20.dp)
                         .border(
                             width = 2.dp,
@@ -163,8 +171,8 @@ fun Register (navController: NavController){
 
                     shape = RoundedCornerShape(16.dp),
 
-                    value = Email,
-                    onValueChange = { Email = it },
+                    value = state.email,
+                    onValueChange = { viewModel.onEmailChange(it) },
 
                     textStyle = LocalTextStyle.current.copy(
                         fontSize = 20.sp,
@@ -198,17 +206,26 @@ fun Register (navController: NavController){
                         unfocusedContainerColor = Color.White,
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black,
-                    )
+                    ),
+                    singleLine = true
                 )
+
+                if (state.emailError != null) {
+                    Text(text = state.emailError!!, color = Color.Red, fontSize = 14.sp)
+                }
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                var Contraseña by remember { mutableStateOf("") }
+                // Estado para la visibilidad de la contraseña
+                var passwordVisible by remember { mutableStateOf(false) }
+                // Estado para la visibilidad de la confirmación de contraseña
+                var confirmPasswordVisible by remember { mutableStateOf(false) }
+
+                // CAMPO PASSWORD
                 TextField(
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .fillMaxWidth()
-                        .height(100.dp)
                         .padding(top = 20.dp, bottom = 20.dp)
                         .border(
                             width = 2.dp,
@@ -218,8 +235,8 @@ fun Register (navController: NavController){
 
                     shape = RoundedCornerShape(16.dp),
 
-                    value = Contraseña,
-                    onValueChange = { Contraseña = it },
+                    value = state.password,
+                    onValueChange = { viewModel.onPasswordChange(it) },
 
                     textStyle = LocalTextStyle.current.copy(
                         fontSize = 20.sp,
@@ -253,19 +270,32 @@ fun Register (navController: NavController){
                         unfocusedContainerColor = Color.White,
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black,
-                    )
+                    ),
+                    singleLine = true,
+                    visualTransformation = if (passwordVisible) androidx.compose.ui.text.input.VisualTransformation.None else androidx.compose.ui.text.input.PasswordVisualTransformation(),
+                    trailingIcon = {
+                        val image = if (passwordVisible)
+                             androidx.compose.material.icons.Icons.Filled.Visibility
+                        else androidx.compose.material.icons.Icons.Filled.VisibilityOff
+
+                        androidx.compose.material3.IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                            Icon(imageVector = image, contentDescription = if (passwordVisible) "Ocultar contraseña" else "Mostrar contraseña")
+                        }
+                    }
                 )
+                
+                if (state.passwordError != null) {
+                    Text(text = state.passwordError!!, color = Color.Red, fontSize = 14.sp)
+                }
 
                 Spacer(modifier = Modifier.height(10.dp))
 
 
-
-                var ConfirmarContrsañea by remember { mutableStateOf("") }
+                // CAMPO CONFIRM PASSWORD
                 TextField(
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .fillMaxWidth()
-                        .height(100.dp)
                         .padding(top = 20.dp, bottom = 20.dp)
                         .border(
                             width = 2.dp,
@@ -275,8 +305,8 @@ fun Register (navController: NavController){
 
                     shape = RoundedCornerShape(16.dp),
 
-                    value = ConfirmarContrsañea,
-                    onValueChange = { ConfirmarContrsañea = it },
+                    value = state.confirmPassword,
+                    onValueChange = { viewModel.onConfirmPasswordChange(it) },
 
                     textStyle = LocalTextStyle.current.copy(
                         fontSize = 20.sp,
@@ -310,29 +340,61 @@ fun Register (navController: NavController){
                         unfocusedContainerColor = Color.White,
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black,
-                    )
+                    ),
+                    singleLine = true,
+                    visualTransformation = if (confirmPasswordVisible) androidx.compose.ui.text.input.VisualTransformation.None else androidx.compose.ui.text.input.PasswordVisualTransformation(),
+                    trailingIcon = {
+                        val image = if (confirmPasswordVisible)
+                             androidx.compose.material.icons.Icons.Filled.Visibility
+                        else androidx.compose.material.icons.Icons.Filled.VisibilityOff
+
+                        androidx.compose.material3.IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
+                            Icon(imageVector = image, contentDescription = if (confirmPasswordVisible) "Ocultar contraseña" else "Mostrar contraseña")
+                        }
+                    }
                 )
 
+                if (state.confirmPasswordError != null) {
+                    Text(text = state.confirmPasswordError!!, color = Color.Red, fontSize = 14.sp)
+                }
+                
+                if (state.registerError != null) {
+                    Text(text = state.registerError!!, color = Color.Red, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                }
 
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
-                    onClick = {navController.navigate(OtrasRutas.Login.route)},
+                    onClick = { viewModel.tryRegister() },
+                    enabled = !state.isLoading,
                     modifier = Modifier.width(230.dp).height(60.dp)
-                        .align(Alignment.CenterHorizontally),
+                        .align(CenterHorizontally),
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Black
                     ),
 
                     ) {
-                    Text(
-                        text = "Registrarse",
-                        fontSize = 25.sp,
-                        fontFamily = FontFamily.SansSerif,
-                        fontWeight = FontWeight.Medium,
-                        color = YellowT
-                    )
+                    if (state.isLoading) {
+                        androidx.compose.material3.CircularProgressIndicator(color = YellowT)
+                    } else {
+                        Text(
+                            text = "Registrarse",
+                            fontSize = 25.sp,
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.Medium,
+                            color = YellowT
+                        )
+                    }
+                }
+                
+                androidx.compose.runtime.LaunchedEffect(state.isSuccess) {
+                    if (state.isSuccess) {
+                        navController.navigate(OtrasRutas.Login.route) {
+                            popUpTo(OtrasRutas.Register.route) { inclusive = true }
+                        }
+                        viewModel.onRegisterSuccessConsumed()
+                    }
                 }
             }
 

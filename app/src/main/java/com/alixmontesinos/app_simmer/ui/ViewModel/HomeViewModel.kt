@@ -38,21 +38,21 @@ class HomeViewModel : ViewModel() {
             delay(2000)
 
             _categories.value = listOf(
-                Category("Cena", R.drawable.category_dinner),
-                Category("Comida", R.drawable.category_lunch),
-                Category("Desayuno", R.drawable.category_breakfast),
-                Category("Postres", R.drawable.category_dessert),
-                Category("Snack", R.drawable.category_snack)
+                Category("Cena", R.drawable.user_avatar),
+                Category("Comida", R.drawable.user_avatar),
+                Category("Desayuno", R.drawable.user_avatar),
+                Category("Postres", R.drawable.user_avatar),
+                Category("Snack", R.drawable.user_avatar)
             )
 
             // Updated popular recipes with more data
             _popularRecipes.value = listOf(
-                Recipe("Huevito con arroz", "Una pequeña receta...", R.drawable.rigatoni_pasta),
-                Recipe("Pollo a la brasa", "Clásico peruano", R.drawable.rigatoni_pasta),
-                Recipe("Lomo Saltado", "Salteado de carne", R.drawable.rigatoni_pasta),
-                Recipe("Causa Limeña", "Plato típico", R.drawable.rigatoni_pasta),
-                Recipe("Aji de Gallina", "Cremoso y delicioso", R.drawable.rigatoni_pasta),
-                Recipe("Ceviche", "Pescado fresco marinado", R.drawable.rigatoni_pasta)
+                Recipe("Huevito con arroz", "Una pequeña receta...", R.drawable.user_avatar),
+                Recipe("Pollo a la brasa", "Clásico peruano", R.drawable.user_avatar),
+                Recipe("Lomo Saltado", "Salteado de carne", R.drawable.user_avatar),
+                Recipe("Causa Limeña", "Plato típico", R.drawable.user_avatar),
+                Recipe("Aji de Gallina", "Cremoso y delicioso", R.drawable.user_avatar),
+                Recipe("Ceviche", "Pescado fresco marinado", R.drawable.user_avatar)
             )
 
             _isLoading.value = false

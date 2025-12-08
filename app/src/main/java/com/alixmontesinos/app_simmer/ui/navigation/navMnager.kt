@@ -6,17 +6,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.alixmontesinos.app_simmer.ui.components.BottomNavigation.items_menu
-import com.alixmontesinos.app_simmer.ui.screens.Favorit
-import com.alixmontesinos.app_simmer.ui.screens.Home
-import com.alixmontesinos.app_simmer.ui.screens.Login
+import com.alixmontesinos.app_simmer.ui.screens.UserApp.CrearReceta
+import com.alixmontesinos.app_simmer.ui.screens.UserApp.Favorit
+import com.alixmontesinos.app_simmer.ui.screens.UserApp.Home
+import com.alixmontesinos.app_simmer.ui.screens.UserAuth.Login
 import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.EditarPerfil
 import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.Perfil
-import com.alixmontesinos.app_simmer.ui.screens.Register
-import com.alixmontesinos.app_simmer.ui.screens.Welcome
+import com.alixmontesinos.app_simmer.ui.screens.UserAuth.Register
+import com.alixmontesinos.app_simmer.ui.screens.UserAuth.Welcome
+import com.alixmontesinos.app_simmer.ui.screens.ViewModelScreen.CrearRecetaViewModel
 
 @Composable
 fun NavHostContainer(
@@ -42,7 +45,11 @@ fun NavHostContainer(
 
             //vistas con BottomBar
             composable(items_menu.Home.ruta) { Home() }
-            composable(items_menu.Crear.ruta) { Crear() }
+            composable(items_menu.Crear.ruta) { 
+                CrearReceta(
+                    onBackClick = { navController.popBackStack() }
+                ) 
+            }
             composable(items_menu.Favorit.ruta) { Favorit() }
             composable(items_menu.Perfil.ruta) {
                 Perfil(
@@ -57,10 +64,4 @@ fun NavHostContainer(
             }
         }
     }
-}
-
-// Placeholder for Create screen
-@Composable
-fun Crear() {
-    Text(text = "Crear")
 }
