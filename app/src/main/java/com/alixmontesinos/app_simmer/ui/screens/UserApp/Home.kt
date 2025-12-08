@@ -2,6 +2,7 @@ package com.alixmontesinos.app_simmer.ui.screens.UserApp
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -28,11 +29,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.alixmontesinos.app_simmer.R
 import com.alixmontesinos.app_simmer.ui.ViewModel.Category
 import com.alixmontesinos.app_simmer.ui.ViewModel.HomeViewModel
 import com.alixmontesinos.app_simmer.ui.ViewModel.Recipe
+import com.alixmontesinos.app_simmer.ui.navigation.OtrasRutas
 import kotlinx.coroutines.launch
 
 val YellowHeader = Color(0xFFFFC93A)
@@ -40,12 +44,51 @@ val BackgroundColor = Color(0xFFFDFCF7)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Home(homeViewModel: HomeViewModel = viewModel()) {
-    androidx.compose.foundation.layout.Box(
-        modifier = androidx.compose.ui.Modifier.fillMaxSize(),
-        contentAlignment = androidx.compose.ui.Alignment.Center
-    ) {
-         androidx.compose.material3.Text("Home Works - Debug Mode")
+
+fun Home(navController: NavController, homeViewModel: HomeViewModel = viewModel()) {
+    val isLoading by homeViewModel.isLoading.collectAsStateWithLifecycle()
+    val categories by homeViewModel.categories.collectAsStateWithLifecycle()
+    val popularRecipes by homeViewModel.popularRecipes.collectAsStateWithLifecycle()
+    val selectedTime by homeViewModel.selectedTime.collectAsStateWithLifecycle()
+    val selectedDifficulty by homeViewModel.selectedDifficulty.collectAsStateWithLifecycle()
+
+    var showBottomSheet by remember { mutableStateOf(false) }
+
+    Scaffold(
+        topBar = { TopBarSection(onFilterClick = { showBottomSheet = true }) },
+        containerColor = BackgroundColor
+    ) { paddingValues ->
+        if (isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else {
+            Column(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
+                CategoriesSection(categories)
+                PopularRecipesSection(recipes = popularRecipes, navController = navController, modifier = Modifier.weight(1f))
+            }
+        }
+    }
+
+    if (showBottomSheet) {
+        FilterBottomSheet(
+            onDismiss = { showBottomSheet = false },
+            onApplyFilters = {
+                homeViewModel.applyFilters()
+                showBottomSheet = false
+            },
+            onClearFilters = {
+                homeViewModel.clearFilters()
+                showBottomSheet = false
+            },
+            selectedTime = selectedTime,
+            onTimeSelected = homeViewModel::onTimeSelected,
+            selectedDifficulty = selectedDifficulty,
+            onDifficultySelected = homeViewModel::onDifficultySelected
+        )
     }
 }
 
@@ -125,20 +168,24 @@ fun TopBarSection(onFilterClick: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilterBottomSheet(onDismiss: () -> Unit) {
+fun FilterBottomSheet(
+    onDismiss: () -> Unit,
+    onApplyFilters: () -> Unit,
+    onClearFilters: () -> Unit,
+    selectedTime: String?,
+    onTimeSelected: (String) -> Unit,
+    selectedDifficulty: String?,
+    onDifficultySelected: (String) -> Unit
+) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val scope = rememberCoroutineScope()
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
         containerColor = BackgroundColor
     ) {
-        val timeOptions = listOf("30 min", "15 min", "1 h")
-        val (selectedTime, onTimeSelected) = remember { mutableStateOf<String?>(null) }
-
+        val timeOptions = listOf("15 min", "30 min", "1 h")
         val difficultyOptions = listOf("Fácil", "Media", "Difícil")
-        val (selectedDifficulty, onDifficultySelected) = remember { mutableStateOf<String?>(null) }
 
         Column(
             modifier = Modifier
@@ -179,22 +226,28 @@ fun FilterBottomSheet(onDismiss: () -> Unit) {
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // Apply Button
-            Button(
-                onClick = {
-                    scope.launch { sheetState.hide() }.invokeOnCompletion {
-                        if (!sheetState.isVisible) {
-                            onDismiss()
-                        }
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-                shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = YellowHeader)
-            ) {
-                Text("Aplicar", color = Color.Black, fontWeight = FontWeight.Bold)
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Button(
+                    onClick = onClearFilters,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(50.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
+                ) {
+                    Text("Limpiar", color = Color.Black, fontWeight = FontWeight.Bold)
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Button(
+                    onClick = onApplyFilters,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(50.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = YellowHeader)
+                ) {
+                    Text("Aplicar", color = Color.Black, fontWeight = FontWeight.Bold)
+                }
             }
         }
     }
@@ -277,7 +330,7 @@ fun CategoryCard(name: String, imageRes: Int) {
 }
 
 @Composable
-fun PopularRecipesSection(recipes: List<Recipe>, modifier: Modifier = Modifier) {
+fun PopularRecipesSection(recipes: List<Recipe>, navController: NavController, modifier: Modifier = Modifier) {
     Column(modifier = modifier.padding(horizontal = 16.dp)) {
         Text(text = "Recetas populares", fontSize = 20.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(12.dp))
@@ -290,17 +343,18 @@ fun PopularRecipesSection(recipes: List<Recipe>, modifier: Modifier = Modifier) 
             contentPadding = PaddingValues(bottom = 16.dp)
         ) {
             items(recipes) { recipe ->
-                PopularRecipeItem(recipe = recipe)
+                PopularRecipeItem(recipe = recipe, onClick = { navController.navigate(OtrasRutas.RecipeDetail.createRoute(recipe.id)) })
             }
         }
     }
 }
 
 @Composable
-fun PopularRecipeItem(recipe: Recipe) {
-    Column {
-        coil.compose.AsyncImage(
-            model = recipe.imageRes,
+
+fun PopularRecipeItem(recipe: Recipe, onClick: () -> Unit) {
+    Column(modifier = Modifier.clickable(onClick = onClick)) {
+        Image(
+            painter = painterResource(id = recipe.imageRes),
             contentDescription = recipe.name,
             contentScale = ContentScale.Crop,
             modifier = Modifier

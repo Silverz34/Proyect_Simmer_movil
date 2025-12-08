@@ -20,6 +20,7 @@ navigationCompose = "2.9.6"
 ui = "1.9.4"
 googleServices = "4.4.2"
 firebaseBom = "33.7.0"
+lifecycleRuntimeCompose = "2.10.0"
 
 [libraries]
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
@@ -49,6 +50,7 @@ lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
