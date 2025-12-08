@@ -44,8 +44,8 @@ class HomeViewModel : ViewModel() {
     }
 
     private fun loadData() {
-        viewModelScope.launch {
-            delay(2000)
+        viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+            // delay(2000) // Removed artificial delay
             _categories.value = listOf(
                 Category("Cena", R.drawable.user_avatar),
                 Category("Comida", R.drawable.user_avatar),
@@ -53,25 +53,14 @@ class HomeViewModel : ViewModel() {
                 Category("Postres", R.drawable.user_avatar),
                 Category("Snack", R.drawable.user_avatar)
             )
-<<<<<<< HEAD
 
-            // Updated popular recipes with more data
-            _popularRecipes.value = listOf(
-                Recipe("Huevito con arroz", "Una pequeña receta...", R.drawable.user_avatar),
-                Recipe("Pollo a la brasa", "Clásico peruano", R.drawable.user_avatar),
-                Recipe("Lomo Saltado", "Salteado de carne", R.drawable.user_avatar),
-                Recipe("Causa Limeña", "Plato típico", R.drawable.user_avatar),
-                Recipe("Aji de Gallina", "Cremoso y delicioso", R.drawable.user_avatar),
-                Recipe("Ceviche", "Pescado fresco marinado", R.drawable.user_avatar)
-=======
             _allRecipes.value = listOf(
-                Recipe(1, "Huevito con arroz", "Una pequeña receta...", R.drawable.rigatoni_pasta, "15 min", "Fácil"),
-                Recipe(2, "Pollo a la brasa", "Clásico peruano", R.drawable.rigatoni_pasta, "1 h", "Media"),
-                Recipe(3, "Lomo Saltado", "Salteado de carne", R.drawable.rigatoni_pasta, "30 min", "Media"),
-                Recipe(4, "Causa Limeña", "Plato típico", R.drawable.rigatoni_pasta, "45 min", "Difícil"),
-                Recipe(5, "Aji de Gallina", "Cremoso y delicioso", R.drawable.rigatoni_pasta, "1 h", "Media"),
-                Recipe(6, "Ceviche", "Pescado fresco marinado", R.drawable.rigatoni_pasta, "30 min", "Fácil")
->>>>>>> 4c8a5ffd3f669484e5eb16ef464536c15001bd81
+                Recipe(1, "Huevito con arroz", "Una pequeña receta...", R.drawable.user_avatar, "15 min", "Fácil"),
+                Recipe(2, "Pollo a la brasa", "Clásico peruano", R.drawable.user_avatar, "1 h", "Media"),
+                Recipe(3, "Lomo Saltado", "Salteado de carne", R.drawable.user_avatar, "30 min", "Media"),
+                Recipe(4, "Causa Limeña", "Plato típico", R.drawable.user_avatar, "45 min", "Difícil"),
+                Recipe(5, "Aji de Gallina", "Cremoso y delicioso", R.drawable.user_avatar, "1 h", "Media"),
+                Recipe(6, "Ceviche", "Pescado fresco marinado", R.drawable.user_avatar, "30 min", "Fácil")
             )
             _popularRecipes.value = _allRecipes.value
             _isLoading.value = false

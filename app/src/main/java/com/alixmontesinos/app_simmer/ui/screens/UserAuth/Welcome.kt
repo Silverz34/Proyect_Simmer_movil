@@ -57,7 +57,7 @@ fun Welcome(navController: NavController){
                 contentDescription = "Logo",
                 modifier = Modifier.align(Alignment.TopCenter)
                     .height(240.dp)
-                    .offset(0.dp,160.dp)
+                    .offset(0.dp,170.dp)
                 ,
                 contentScale = ContentScale.Crop
             )
@@ -81,7 +81,7 @@ fun Welcome(navController: NavController){
                     fontFamily = ItimFont
                 )
 
-                Spacer(modifier = Modifier.height(45.dp))
+                Spacer(modifier = Modifier.height(40.dp))
 
                 Text("Somos una comunidad muy activa y solidaria, conócenos! ",
                     fontSize = 26.sp,

@@ -78,12 +78,12 @@ fun Login(
 
         Column(
             modifier = Modifier
-                .padding(top = 120.dp, bottom = 200.dp)
+                .padding(top = 110.dp, bottom = 200.dp)
                 .fillMaxWidth()
         ) {
 
             Text(
-                modifier = Modifier.padding(top = 40.dp, start = 60.dp),
+                modifier = Modifier.padding(top = 30.dp, start = 60.dp),
                 text = "Inicio de \nsesión",
                 fontSize = 60.sp,
                 lineHeight = 50.sp,
@@ -91,7 +91,7 @@ fun Login(
                 color = Color.Black
             )
 
-            Spacer(modifier = Modifier.padding(top = 40.dp, start = 60.dp))
+            Spacer(modifier = Modifier.padding(top = 30.dp, start = 60.dp))
 
             Text(
                 modifier = Modifier.padding(horizontal = 60.dp),
@@ -149,7 +149,7 @@ fun Login(
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.email),
-                                contentDescription = "Nombre de Usuario",
+                                contentDescription = "Correo electronico",
                                 tint = Color.Gray,
                                 modifier = Modifier.size(22.dp)
                             )
@@ -318,7 +318,7 @@ fun Login(
                         color = Color.Black
                     )
 
-                    Spacer(modifier = Modifier.width(10.dp))
+                    Spacer(modifier = Modifier.width(15.dp))
 
                     Text(
                         text = "Registrate aquí",

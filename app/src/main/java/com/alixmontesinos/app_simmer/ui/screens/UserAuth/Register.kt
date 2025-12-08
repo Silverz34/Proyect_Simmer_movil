@@ -5,6 +5,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -69,9 +71,9 @@ fun Register (
         FlechaRegreso(onBackClick = { navController.popBackStack() })
 
 
-        Column(modifier = Modifier.fillMaxWidth().padding(top = 100.dp, bottom = 200.dp)) {
+        Column(modifier = Modifier.fillMaxWidth().padding(top = 80.dp, bottom = 200.dp)) {
             Text(
-                modifier = Modifier.padding(top = 50.dp, start = 50.dp),
+                modifier = Modifier.padding(top = 45.dp, start = 50.dp),
                 text = "Registrate",
                 fontSize = 50.sp,
                 fontFamily = ItimFont,
@@ -81,7 +83,7 @@ fun Register (
 
 
             Text(
-                modifier = Modifier.padding(top = 10.dp, start = 50.dp),
+                modifier = Modifier.padding(top = 35.dp, start = 50.dp),
                 text = "Bienvenido, regístrate para conocer nuevas recetas",
                 fontSize = 25.sp,
                 fontFamily = NunitoSansSemiBold,
@@ -90,7 +92,7 @@ fun Register (
 
         }
         Card(
-            modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(650.dp),
+            modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(600.dp),
             shape = RoundedCornerShape(
                 topStart = 50.dp,
                 topEnd = 50.dp,
@@ -101,7 +103,10 @@ fun Register (
         )
         {
 
-            Column(modifier = Modifier.padding(50.dp).fillMaxWidth())
+            Column(modifier = Modifier
+                .padding(horizontal = 40.dp, vertical = 30.dp)
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState()))
             {
                 // CAMPO USUARIO
                 TextField(

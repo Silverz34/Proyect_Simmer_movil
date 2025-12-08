@@ -81,7 +81,7 @@ class RegisterViewModel : ViewModel() {
 
         uiState = uiState.copy(isLoading = true, registerError = null)
 
-        viewModelScope.launch {
+        viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
             try {
                 // 1. Crear usuario en Firebase Auth
                 val authResult = auth.createUserWithEmailAndPassword(uiState.email, uiState.password).await()

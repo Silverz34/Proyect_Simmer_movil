@@ -1,6 +1,6 @@
 package com.alixmontesinos.app_simmer.ui.screens
 
-import androidx.compose.foundation.Image
+import coil.compose.AsyncImage
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -25,10 +25,10 @@ import com.alixmontesinos.app_simmer.ui.components.FlechaRegreso
 import com.alixmontesinos.app_simmer.ui.components.FotoPerfilUniversal
 
 @Composable
-fun RecipeDetailScreen(navController: NavController, recipeId: Int) {
+fun RecipeDetailScreen(navController: NavController, recipeId: String) {
     // NOTE: Replace this with a real ViewModel call
     val recipe = Recipe(
-        id = 1,
+        id = "1",
         title = "Pancakes de Arándanos",
         author = "Alix Montesinos",
         imageRes = R.drawable.category_breakfast,
@@ -42,8 +42,8 @@ fun RecipeDetailScreen(navController: NavController, recipeId: Int) {
 
     Box(modifier = Modifier.fillMaxSize()) {
         // 1. Background Image (Header)
-        Image(
-            painter = painterResource(id = recipe.imageRes),
+        AsyncImage(
+            model = if (recipe.imageUrl.isNotEmpty()) recipe.imageUrl else (recipe.imageRes ?: R.drawable.cargarimagen),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
