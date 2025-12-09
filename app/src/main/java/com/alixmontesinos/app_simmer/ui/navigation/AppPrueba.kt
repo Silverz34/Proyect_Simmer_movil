@@ -93,10 +93,9 @@ fun AppPrueba(){
 
             // Dentro de tu NavHost
             composable(
-                route = "detail/{recipeId}", // Definimos que acepta un parámetro
+                route = OtrasRutas.RecipeDetail.route, // Definimos que acepta un parámetro
                 arguments = listOf(navArgument("recipeId") { type = androidx.navigation.NavType.StringType })
             ) { backStackEntry ->
-                // Obtenemos el ID que nos pasaron
                 val recipeId = backStackEntry.arguments?.getString("recipeId") ?: ""
                 RecipeDetailScreen(navController, recipeId)
             }
