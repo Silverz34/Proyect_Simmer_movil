@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+
+
 class DescriptionViewModel : ViewModel()  {
     private val _descripcion = MutableStateFlow("descrpccion de perfil")
     val descripcion: StateFlow<String> = _descripcion.asStateFlow()
