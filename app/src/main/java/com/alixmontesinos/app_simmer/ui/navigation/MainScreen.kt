@@ -9,7 +9,7 @@ import com.alixmontesinos.app_simmer.ui.components.BottomNavigation.BottomNaviga
 import com.alixmontesinos.app_simmer.ui.components.BottomNavigation.items
 import com.alixmontesinos.app_simmer.ui.components.BottomNavigation.items_menu
 
-@Composable
+/*@Composable
 fun MainScreen() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -32,4 +32,4 @@ fun MainScreen() {
             padding = paddingValues
         )
     }
-}
+}*/
