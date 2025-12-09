@@ -53,7 +53,6 @@ fun EditarDescrip(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Botón Cancelar
             TextButton(onClick = onCancelClick) {
                 Text(
                     text = "Cancel",

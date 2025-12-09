@@ -48,7 +48,9 @@ val TextBlack = Color(0xFF1C1C1E)
 val LinkBlue = Color(0xFF2196F3)
 
 @Composable
-fun EditarPerfil(onBackClick: () -> Unit){
+fun EditarPerfil(onBackClick: () -> Unit,
+                 currentDescription: String,
+                 onDescriptionClick: () -> Unit){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -62,7 +64,7 @@ fun EditarPerfil(onBackClick: () -> Unit){
         Spacer(modifier = Modifier.height(32.dp))
         NamesCardSection()
         Spacer(modifier = Modifier.height(24.dp))
-        BasicInfoSection()
+        BasicInfoSection(currentDescription, onDescriptionClick)
         Spacer(modifier = Modifier.height(32.dp))
     }
 }
@@ -130,7 +132,10 @@ fun NamesCardSection() {
 }
 
 @Composable
-fun BasicInfoSection() {
+fun BasicInfoSection(
+    currentDescription: String,
+    onDescriptionClick: () -> Unit
+) {
     Column(modifier = Modifier.padding(horizontal = 24.dp)) {
         Text(
             text = "Información básica",
@@ -139,6 +144,7 @@ fun BasicInfoSection() {
             modifier = Modifier.padding(bottom = 12.dp, start = 4.dp)
         )
         Card(
+            onClick = onDescriptionClick,
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = Color.White),
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
@@ -161,7 +167,7 @@ fun BasicInfoSection() {
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt...",
+                        text = currentDescription,
                         color = TextBlack,
                         fontSize = 14.sp,
                         maxLines = 3,

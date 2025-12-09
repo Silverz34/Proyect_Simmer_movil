@@ -1,5 +1,6 @@
 package com.alixmontesinos.app_simmer.ui.screens.PerfilUser
 
+import android.R.attr.description
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -58,7 +59,8 @@ val listaRecetasPrueba = listOf(
 
 
 @Composable
-fun Perfil(onEditClick: () -> Unit) {
+fun Perfil(onEditClick: () -> Unit,
+           description: String) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -81,7 +83,7 @@ fun Perfil(onEditClick: () -> Unit) {
                     Spacer(modifier = Modifier.height(16.dp))
                     ProfileStats()
                     Spacer(modifier = Modifier.height(24.dp))
-                    ProfileDescription()
+                    ProfileDescription(description)
                     Spacer(modifier = Modifier.height(24.dp))
                     EditProfileButton(onEditClick = onEditClick)
                     Spacer(modifier = Modifier.height(30.dp))
@@ -176,9 +178,9 @@ fun StatItem(number: String, label: String) {
 }
 
 @Composable
-fun ProfileDescription() {
+fun ProfileDescription(description: String) {
     Text(
-        text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+        text = description,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 32.dp),
