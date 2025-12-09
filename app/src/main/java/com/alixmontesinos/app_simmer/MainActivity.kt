@@ -8,12 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import com.alixmontesinos.app_simmer.ui.navigation.AppPrueba
-import com.alixmontesinos.app_simmer.ui.navigation.MainScreen
-import com.alixmontesinos.app_simmer.ui.screens.UserApp.CrearReceta
-import com.alixmontesinos.app_simmer.ui.screens.UserAuth.Login
-import com.alixmontesinos.app_simmer.ui.screens.UserAuth.Register
 import com.alixmontesinos.app_simmer.ui.theme.App_simmerTheme
 
 
