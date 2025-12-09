@@ -78,7 +78,7 @@ fun EditarPerfil(uiState: perfilUser,
             onChangeClick = { launcher.launch("image/*")}
         )
         Spacer(modifier = Modifier.height(32.dp))
-        NamesCardSection()
+        NamesCardSection(name = uiState.username)
         Spacer(modifier = Modifier.height(24.dp))
         BasicInfoSection(
             currentDescription = uiState.description,
@@ -133,7 +133,7 @@ fun ProfilePhoto(onChangeClick: () -> Unit) {
     }
 }
 @Composable
-fun NamesCardSection() {
+fun NamesCardSection(name : String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -143,7 +143,7 @@ fun NamesCardSection() {
         shape = RoundedCornerShape(16.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            ProfileInfoRow(label = "Nombre", value = "Alix M")
+            ProfileInfoRow(label = "Nombre", value = name)
         }
     }
 }

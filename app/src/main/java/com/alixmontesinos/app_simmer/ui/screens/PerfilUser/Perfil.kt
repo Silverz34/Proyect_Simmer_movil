@@ -139,7 +139,8 @@ fun ProfileHeader(
         FotoPerfilUniversal(
             size = 100.dp,
             hasBorder = true,
-            showCameraIcon = false
+            showCameraIcon = false,
+            photoUrl = photoUrl
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
