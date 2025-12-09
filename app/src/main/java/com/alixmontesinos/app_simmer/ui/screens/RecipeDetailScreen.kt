@@ -21,124 +21,145 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.alixmontesinos.app_simmer.R
 import com.alixmontesinos.app_simmer.model.Recipe
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.alixmontesinos.app_simmer.ui.ViewModel.RecipeDetailViewModel
 import com.alixmontesinos.app_simmer.ui.components.FlechaRegreso
 import com.alixmontesinos.app_simmer.ui.components.FotoPerfilUniversal
 
 @Composable
-fun RecipeDetailScreen(navController: NavController, recipeId: String) {
-    // NOTE: Replace this with a real ViewModel call
-    val recipe = Recipe(
-        id = "1",
-        title = "Pancakes de Arándanos",
-        author = "Alix Montesinos",
-        imageRes = R.drawable.category_breakfast,
-        time = "30 min",
-        difficulty = "Fácil",
-        calories = "250 kcal",
-        description = "Unos deliciosos pancakes esponjosos perfectos para el desayuno.",
-        ingredients = listOf("2 tazas de harina", "2 huevos", "1 taza de leche", "Arándanos frescos"),
-        steps = listOf("Mezcla los ingredientes secos.", "Bate los huevos y la leche.", "Combina todo y cocina.")
-    )
+fun RecipeDetailScreen(
+    navController: NavController,
+    recipeId: String,
+    viewModel: RecipeDetailViewModel = viewModel()
+) {
+    LaunchedEffect(recipeId) {
+        viewModel.loadRecipe(recipeId)
+    }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        // 1. Background Image (Header)
-        AsyncImage(
-            model = if (recipe.imageUrl.isNotEmpty()) recipe.imageUrl else (recipe.imageRes ?: R.drawable.cargarimagen),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .align(Alignment.TopCenter)
-        )
+    val recipe by viewModel.recipe.collectAsStateWithLifecycle()
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
 
-        // 2. Overlay Buttons (Back and Bookmark)
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 40.dp, start = 16.dp, end = 16.dp)
-                .align(Alignment.TopCenter),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            FlechaRegreso(onBackClick = { navController.popBackStack() })
-
-            IconButton(
-                onClick = { /* Bookmark logic */ },
-                modifier = Modifier.background(Color.White.copy(alpha = 0.7f), shape = CircleShape)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.icon_bookmark),
-                    contentDescription = "Bookmark",
-                    tint = Color.Black
-                )
-            }
+    if (isLoading) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator(color = Color(0xFFFFC533))
         }
+    } else {
+        recipe?.let { currentRecipe ->
+            Box(modifier = Modifier.fillMaxSize()) {
+                // 1. Background Image (Header)
+                AsyncImage(
+                    model = if (currentRecipe.imageUrl.isNotEmpty()) currentRecipe.imageUrl else (currentRecipe.imageRes ?: R.drawable.cargarimagen),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp)
+                        .align(Alignment.TopCenter)
+                )
 
-        // 3. Main Content (Scrollable)
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 270.dp)
-                .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
-                .background(Color.White)
-                .verticalScroll(rememberScrollState())
-                .padding(24.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .width(40.dp)
-                    .height(4.dp)
-                    .background(Color.Gray.copy(alpha = 0.3f), RoundedCornerShape(2.dp))
-                    .align(Alignment.CenterHorizontally)
-            )
+                // 2. Overlay Buttons (Back and Bookmark)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 40.dp, start = 16.dp, end = 16.dp)
+                        .align(Alignment.TopCenter),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    FlechaRegreso(onBackClick = { navController.popBackStack() })
 
-            Spacer(modifier = Modifier.height(16.dp))
+                    IconButton(
+                        onClick = { /* Bookmark logic */ },
+                        modifier = Modifier.background(Color.White.copy(alpha = 0.7f), shape = CircleShape)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.icon_bookmark),
+                            contentDescription = "Bookmark",
+                            tint = Color.Black
+                        )
+                    }
+                }
 
-            Text(text = recipe.title, fontSize = 24.sp, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                FotoPerfilUniversal(size=40.dp)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "por ${recipe.author}", color = Color.Gray)
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                InfoChip(icon = R.drawable.candadito, label = recipe.time)
-                InfoChip(icon = R.drawable.candadito, label = recipe.difficulty)
-                InfoChip(icon = R.drawable.candadito, label = recipe.calories)
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Text(text = "Ingredientes", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-            Spacer(modifier = Modifier.height(8.dp))
-            recipe.ingredients.forEach { ingredient ->
-                Row(modifier = Modifier.padding(vertical = 4.dp)) {
+                // 3. Main Content (Scrollable)
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 270.dp)
+                        .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
+                        .background(Color.White)
+                        .verticalScroll(rememberScrollState())
+                        .padding(24.dp)
+                ) {
                     Box(
                         modifier = Modifier
-                            .size(8.dp)
-                            .padding(top = 6.dp)
-                            .background(Color(0xFF4CAF50), shape = CircleShape)
+                            .width(40.dp)
+                            .height(4.dp)
+                            .background(Color.Gray.copy(alpha = 0.3f), RoundedCornerShape(2.dp))
+                            .align(Alignment.CenterHorizontally)
                     )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Text(text = ingredient, color = Color.DarkGray)
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(text = currentRecipe.title, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        FotoPerfilUniversal(size=40.dp)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "por ${currentRecipe.author}", color = Color.Gray)
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround
+                    ) {
+                        InfoChip(icon = R.drawable.candadito, label = currentRecipe.time)
+                        InfoChip(icon = R.drawable.candadito, label = currentRecipe.difficulty)
+                        InfoChip(icon = R.drawable.candadito, label = currentRecipe.calories)
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Text(text = "Ingredientes", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    currentRecipe.ingredients.forEach { ingredient ->
+                        Row(modifier = Modifier.padding(vertical = 4.dp)) {
+                            Box(
+                                modifier = Modifier
+                                    .size(8.dp)
+                                    .padding(top = 6.dp)
+                                    .background(Color(0xFF4CAF50), shape = CircleShape)
+                            )
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Text(text = ingredient, color = Color.DarkGray)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Text(text = "Preparación", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    currentRecipe.steps.forEachIndexed { index, step ->
+                        Row(modifier = Modifier.padding(vertical = 4.dp)) {
+                            Text(text = "${index + 1}.", fontWeight = FontWeight.Bold, color = Color.Black)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = step, color = Color.Gray, lineHeight = 20.sp)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(50.dp))
                 }
             }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Text(text = "Preparación", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = recipe.description, lineHeight = 24.sp, color = Color.Gray)
-
-            Spacer(modifier = Modifier.height(50.dp))
+        } ?: run {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("Error al cargar la receta")
+            }
         }
     }
 }

@@ -20,4 +20,19 @@ class RecipeRepositoryImpl : RecipeRepository {
             emptyList()
         }
     }
+
+    override suspend fun getRecipeById(id: String): Recipe? {
+        return try {
+            val document = firestore.collection("recipes").document(id).get().await()
+            if (document.exists()) {
+                document.toObject(Recipe::class.java)
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("RecipeRepository", "Error fetching recipe $id", e)
+            e.printStackTrace()
+            null
+        }
+    }
 }
