@@ -3,7 +3,7 @@ package com.alixmontesinos.app_simmer.model
 import androidx.annotation.DrawableRes
 
 data class Recipe(
-    val id: String = "",
+    val id: String  = "",
     val userId: String = "",
     val title: String = "",
     val author: String = "",
@@ -17,5 +17,6 @@ data class Recipe(
     val steps: List<String> = emptyList(),
     val etiquetas: List<String> = emptyList(),
     val tiempoPreparacion: String = "",
-    val extraImages: List<String> = emptyList() // URLs
+    val extraImages: List<String> = emptyList(), // URLs
+    val timestamp: Long = 0L
 )

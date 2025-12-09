@@ -67,7 +67,7 @@ import androidx.compose.material3.CircularProgressIndicator
 
 @Composable
 fun CrearReceta(onBackClick: () -> Unit,
-    viewModel: CrearRecetaViewModel = viewModel()
+                viewModel: CrearRecetaViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -90,9 +90,9 @@ fun CrearReceta(onBackClick: () -> Unit,
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        
+
         if (uiState.isLoading) {
-             Box(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color.Black.copy(alpha = 0.5f))
@@ -116,7 +116,7 @@ fun CrearReceta(onBackClick: () -> Unit,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
-            
+
             if (uiState.imageUri == null) {
                 Box(
                     modifier = Modifier
@@ -181,7 +181,7 @@ fun CrearReceta(onBackClick: () -> Unit,
                     OutlinedTextField(
                         value = uiState.descripcion,
                         onValueChange = { viewModel.onDescripcionChange(it) },
-                            label = { Text("Descripción", fontFamily = NunitoSans )},
+                        label = { Text("Descripción", fontFamily = NunitoSans, fontSize = 20.sp )},
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 3,
                         maxLines = 5,
@@ -285,27 +285,27 @@ fun CrearReceta(onBackClick: () -> Unit,
                 }
 
                 item {
-                     Row(
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable { viewModel.agregarPaso() }
                             .padding(vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                         Icon(
-                             painter = painterResource(id = R.drawable.agregarpaso),
-                             contentDescription = null,
-                             tint = Color.Unspecified,
-                             modifier = Modifier.size(24.dp)
-                         )
-                         Spacer(modifier = Modifier.width(8.dp))
-                         Text(
-                             text = "Agregar Paso",
-                             fontFamily = ItimFont,
-                             color = Color.Black,
-                             fontWeight = FontWeight.Bold,
-                             fontSize = 18.sp
-                         )
+                        Icon(
+                            painter = painterResource(id = R.drawable.agregarpaso),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Agregar Paso",
+                            fontFamily = ItimFont,
+                            color = Color.Black,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp
+                        )
                     }
                 }
 
@@ -337,7 +337,7 @@ fun CrearReceta(onBackClick: () -> Unit,
                             FilterChip(
                                 selected = uiState.etiquetas.contains(etiqueta),
                                 onClick = { viewModel.toggleEtiqueta(etiqueta) },
-                                label = { Text(etiqueta, fontFamily = NunitoSans) },
+                                label = { Text(etiqueta, fontFamily = NunitoSans, color = Color.Black, fontWeight = FontWeight.Bold) },
                                 colors = FilterChipDefaults.filterChipColors(
                                     selectedContainerColor = Color(0xFFFFC107), // Yellow-ish
                                     selectedLabelColor = Color.Black
@@ -367,7 +367,37 @@ fun CrearReceta(onBackClick: () -> Unit,
                             FilterChip(
                                 selected = uiState.tiempoPreparacion == tiempo,
                                 onClick = { viewModel.setTiempoPreparacion(tiempo) },
-                                label = { Text(tiempo, fontFamily = NunitoSans) },
+                                label = { Text(tiempo, fontFamily = NunitoSans, color = Color.Black, fontWeight = FontWeight.Bold) },
+                                colors = FilterChipDefaults.filterChipColors(
+                                    selectedContainerColor = Color(0xFFFFC107),
+                                    selectedLabelColor = Color.Black
+                                ),
+                                shape = RoundedCornerShape(50)
+                            )
+                        }
+                    }
+                }
+
+                // Seccion Dificultad
+                item {
+                    Text(
+                        text = "Dificultad:",
+                        fontFamily = NunitoSans,
+                        color = Color.Black,
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(top = 16.dp, bottom = 4.dp)
+                    )
+                    @OptIn(ExperimentalLayoutApi::class)
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        val dificultadsDisponibles = listOf("Fácil", "Media", "Difícil")
+                        dificultadsDisponibles.forEach { dificultad ->
+                            FilterChip(
+                                selected = uiState.dificultad == dificultad,
+                                onClick = { viewModel.setDificultad(dificultad) },
+                                label = { Text(dificultad, fontFamily = NunitoSans, color = Color.Black, fontWeight = FontWeight.Bold) },
                                 colors = FilterChipDefaults.filterChipColors(
                                     selectedContainerColor = Color(0xFFFFC107),
                                     selectedLabelColor = Color.Black
@@ -389,7 +419,7 @@ fun CrearReceta(onBackClick: () -> Unit,
                         fontSize = 24.sp,
                         modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
                     )
-                    
+
                     val extraImagesLauncher = rememberLauncherForActivityResult(
                         contract = ActivityResultContracts.GetContent()
                     ) { uri: Uri? ->
@@ -403,7 +433,7 @@ fun CrearReceta(onBackClick: () -> Unit,
                         // Mostrar imagenes seleccionadas + slot vacio si hay espacio (< 3)
                         val imagenesAMostrar = uiState.imagenesExtra.take(3)
                         imagenesAMostrar.forEachIndexed { index, uri ->
-                             Box(
+                            Box(
                                 modifier = Modifier
                                     .size(100.dp)
                                     .background(Color.LightGray, RoundedCornerShape(12.dp)),
@@ -489,8 +519,8 @@ fun CrearReceta(onBackClick: () -> Unit,
                         }
 
                         Button(
-                            onClick = { 
-                                viewModel.guardarReceta() 
+                            onClick = {
+                                viewModel.guardarReceta()
                                 // Opcional: Navegar o mostrar éxito 
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFC107)), // Yellow

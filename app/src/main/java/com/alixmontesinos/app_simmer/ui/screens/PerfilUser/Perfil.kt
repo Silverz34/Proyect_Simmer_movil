@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -61,7 +62,8 @@ val listaRecetasPrueba = listOf(
 
 @Composable
 fun Perfil(uiState: perfilUser,
-           onEditClick: () -> Unit) {
+           onEditClick: () -> Unit,
+           onLogoutClick: () -> Unit) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -90,6 +92,8 @@ fun Perfil(uiState: perfilUser,
                     ProfileDescription(uiState.description)
                     Spacer(modifier = Modifier.height(24.dp))
                     EditProfileButton(onEditClick = onEditClick)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    LogoutButton(onLogoutClick = onLogoutClick)
                     Spacer(modifier = Modifier.height(30.dp))
                 }
             }
@@ -232,3 +236,30 @@ fun VerticalDivider(
     )
 }
 
+
+@Composable
+fun LogoutButton(onLogoutClick: () -> Unit) {
+    Button(
+        onClick = onLogoutClick,
+        modifier = Modifier
+            .height(50.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Red // Color rojo para indicar acción destructiva/salida
+        ),
+        shape = RoundedCornerShape(45.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.ExitToApp,
+            contentDescription = "Cerrar Sesión",
+            tint = Color.White,
+            modifier = Modifier.size(20.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = "Cerrar Sesión",
+            color = Color.White,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium
+        )
+    }
+}

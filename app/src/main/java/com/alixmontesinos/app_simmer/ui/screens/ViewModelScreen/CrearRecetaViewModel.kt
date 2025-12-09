@@ -28,6 +28,7 @@ data class CrearRecetaUiState(
     val imageUri: Uri? = null,
     val etiquetas: List<String> = emptyList(),
     val tiempoPreparacion: String? = null,
+    val dificultad: String? = null,
     val imagenesExtra: List<Uri> = emptyList(),
     val isLoading: Boolean = false,
     val mensajeExito: String? = null,
@@ -105,7 +106,7 @@ class CrearRecetaViewModel : ViewModel() {
         }
     }
 
-    // --- Etiquetas y Tiempo ---
+    // --- Etiquetas y Tiempo y Dificultad ---
 
     fun toggleEtiqueta(etiqueta: String) {
         val etiquetasActuales = _uiState.value.etiquetas.toMutableList()
@@ -119,6 +120,10 @@ class CrearRecetaViewModel : ViewModel() {
 
     fun setTiempoPreparacion(tiempo: String) {
         _uiState.update { it.copy(tiempoPreparacion = tiempo) }
+    }
+
+    fun setDificultad(dificultad: String) {
+        _uiState.update { it.copy(dificultad = dificultad) }
     }
 
     // --- Imagenes Extra ---
@@ -204,8 +209,9 @@ class CrearRecetaViewModel : ViewModel() {
                     tiempoPreparacion = state.tiempoPreparacion ?: "",
                     extraImages = extraImageUrls,
                     time = state.tiempoPreparacion ?: "",
-                    difficulty = "Media",
-                    calories = ""
+                    difficulty = state.dificultad ?: "Media",
+                    calories = "",
+                    timestamp = System.currentTimeMillis() // Nuevo campo para ordenamiento
                 )
 
                 // 4. Guardar en Firestore
@@ -226,6 +232,7 @@ class CrearRecetaViewModel : ViewModel() {
                         imageUri = null,
                         etiquetas = emptyList(),
                         tiempoPreparacion = null,
+                        dificultad = null,
                         imagenesExtra = emptyList()
                     )
                 }
