@@ -34,55 +34,54 @@ import androidx.navigation.NavController
 import com.alixmontesinos.app_simmer.R
 import com.alixmontesinos.app_simmer.ui.components.RecipeCard
 import com.alixmontesinos.app_simmer.ui.navigation.OtrasRutas
-
-// Dummy data class for favorites
-data class FavoriteRecipe(
-    val id: String,
-    val imageRes: Int,
-    val title: String,
-    val rating: Double,
-    val time: String,
-    val difficulty: String,
-    val author: String
-)
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.alixmontesinos.app_simmer.ui.ViewModel.FavoritesViewModel
+import com.alixmontesinos.app_simmer.model.Recipe
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Favorit(navController: NavController) { // Add NavController
+fun Favorit(
+    navController: NavController,
+    favoritesViewModel: FavoritesViewModel = viewModel()
+) {
     val BackgroundColor = Color(0xFFFDFCF7)
-
-    // Dummy list of favorite recipes
-    val favoriteRecipes = remember {
-        listOf(
-            FavoriteRecipe("1", R.drawable.rigatoni_pasta, "Rigatoni Pasta", 4.9, "35 min", "Media", "Alix M"),
-            FavoriteRecipe("2", R.drawable.category_breakfast, "Pancakes", 4.8, "20 min", "Fácil", "John D"),
-            FavoriteRecipe("3", R.drawable.category_dinner, "Salmon", 4.9, "40 min", "Media", "Jane S")
-        )
-    }
+    val favoriteRecipes by favoritesViewModel.favorites.collectAsState()
 
     Scaffold(
         topBar = { FavoriteTopBar() },
         containerColor = BackgroundColor
     ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize(),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(favoriteRecipes) { recipe -> // use items with the list
-                RecipeCard(
-                    imageRes = recipe.imageRes,
-                    title = recipe.title,
-                    rating = recipe.rating,
-                    time = recipe.time,
-                    difficulty = recipe.difficulty,
-                    author = recipe.author,
-                    modifier = Modifier.clickable { // Make the card clickable
-                        navController.navigate(OtrasRutas.RecipeDetail.createRoute(recipe.id))
-                    }
-                )
+        if (favoriteRecipes.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "No tienes favoritos aún", color = Color.Gray)
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize(),
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(favoriteRecipes) { recipe ->
+                    RecipeCard(
+                        imageRes = recipe.imageRes,
+                        imageUrl = recipe.imageUrl,
+                        title = recipe.title,
+                        rating = 0.0,
+                        time = recipe.time,
+                        difficulty = recipe.difficulty,
+                        author = recipe.author,
+                        modifier = Modifier.clickable {
+                            navController.navigate(OtrasRutas.RecipeDetail.createRoute(recipe.id))
+                        }
+                    )
+                }
             }
         }
     }

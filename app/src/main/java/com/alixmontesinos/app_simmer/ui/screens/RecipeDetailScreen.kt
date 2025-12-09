@@ -19,6 +19,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
 import com.alixmontesinos.app_simmer.R
 import com.alixmontesinos.app_simmer.model.Recipe
 import androidx.compose.runtime.LaunchedEffect
@@ -42,6 +45,7 @@ fun RecipeDetailScreen(
 
     val recipe by viewModel.recipe.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+    val isFavorite by viewModel.isFavorite.collectAsStateWithLifecycle()
 
     if (isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -73,13 +77,13 @@ fun RecipeDetailScreen(
                     FlechaRegreso(onBackClick = { navController.popBackStack() })
 
                     IconButton(
-                        onClick = { /* Bookmark logic */ },
+                        onClick = { viewModel.toggleFavorite() },
                         modifier = Modifier.background(Color.White.copy(alpha = 0.7f), shape = CircleShape)
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.icon_bookmark),
+                            imageVector = if (isFavorite) androidx.compose.material.icons.Icons.Filled.Bookmark else androidx.compose.material.icons.Icons.Filled.BookmarkBorder,
                             contentDescription = "Bookmark",
-                            tint = Color.Black
+                            tint = if (isFavorite) Color(0xFFFFC533) else Color.Black
                         )
                     }
                 }

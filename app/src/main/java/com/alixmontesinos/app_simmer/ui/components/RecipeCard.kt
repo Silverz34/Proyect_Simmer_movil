@@ -28,9 +28,10 @@ import com.alixmontesinos.app_simmer.R
 @Composable
 fun RecipeCard(
     modifier: Modifier = Modifier,
-    imageRes: Int,
+    imageRes: Int? = null,
+    imageUrl: String = "",
     title: String,
-    rating: Double,
+    rating: Double = 0.0,
     time: String,
     difficulty: String,
     author: String
@@ -45,25 +46,27 @@ fun RecipeCard(
             Box(modifier = Modifier
                 .height(200.dp)
                 .fillMaxWidth()) {
-                Image(
-                    painter = painterResource(id = imageRes),
+                coil.compose.AsyncImage(
+                    model = if (imageUrl.isNotEmpty()) imageUrl else (imageRes ?: R.drawable.cargarimagen),
                     contentDescription = title,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
 
                 // Rating
-                Row(
-                    modifier = Modifier
-                        .align(Alignment.TopStart)
-                        .padding(12.dp)
-                        .background(Color.White, RoundedCornerShape(16.dp))
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(Icons.Default.Favorite, contentDescription = "Rating", tint = Color.Red)
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = rating.toString(), fontWeight = FontWeight.Bold, color = Color.Black)
+                if (rating > 0) {
+                    Row(
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .padding(12.dp)
+                            .background(Color.White, RoundedCornerShape(16.dp))
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(Icons.Default.Favorite, contentDescription = "Rating", tint = Color.Red)
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(text = rating.toString(), fontWeight = FontWeight.Bold, color = Color.Black)
+                    }
                 }
 
                 // Bookmark
