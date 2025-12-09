@@ -139,12 +139,6 @@ fun ProfileHeader() {
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
         )
-        Text(
-            text = "Tamalera",
-            fontSize = 14.sp,
-            color = Color.Gray,
-
-        )
     }
 }
 

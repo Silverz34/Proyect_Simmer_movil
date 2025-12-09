@@ -125,8 +125,6 @@ fun NamesCardSection() {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             ProfileInfoRow(label = "Nombre", value = "Alix M")
-            Spacer(modifier = Modifier.height(16.dp))
-            ProfileInfoRow(label = "Otro nombre", value = "Tamalera")
         }
     }
 }
