@@ -108,7 +108,7 @@ fun AppPrueba(){
             }
 
             composable(
-                route = "detail/{recipeId}",
+                route = OtrasRutas.RecipeDetail.route, // Definimos que acepta un parámetro
                 arguments = listOf(navArgument("recipeId") { type = androidx.navigation.NavType.StringType })
             ) { backStackEntry ->
                 val recipeId = backStackEntry.arguments?.getString("recipeId") ?: ""

@@ -376,7 +376,17 @@ fun PopularRecipesSection(recipes: List<Recipe>, navController: NavController, m
 @Composable
 
 fun PopularRecipeItem(recipe: Recipe, onClick: () -> Unit) {
-    Column(modifier = Modifier.clickable(onClick = onClick)) {
+    android.util.Log.d("Home", "Receta: ${recipe.title} - ID: ${recipe.id}")
+    Column(
+        modifier = Modifier.clickable {
+            // VALIDACIÓN DE SEGURIDAD
+            if (recipe.id.isNotEmpty()) {
+                onClick()
+            } else {
+                android.util.Log.e("HomeError", "Intentando navegar a una receta sin ID")
+            }
+        }
+    ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(if (recipe.imageUrl.isNotEmpty()) recipe.imageUrl else recipe.imageRes ?: R.drawable.cargarimagen)

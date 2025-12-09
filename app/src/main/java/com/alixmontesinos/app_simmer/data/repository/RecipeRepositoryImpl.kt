@@ -11,12 +11,13 @@ class RecipeRepositoryImpl : RecipeRepository {
         return try {
             val snapshot = firestore.collection("recipes").get().await()
             android.util.Log.d("RecipeRepository", "Found ${snapshot.size()} documents")
-            val recipes = snapshot.toObjects(Recipe::class.java)
-            android.util.Log.d("RecipeRepository", "Mapped to ${recipes.size} recipes")
+            val recipes = snapshot.documents.mapNotNull { document ->
+                val recipe = document.toObject(Recipe::class.java)
+                recipe?.copy(id = document.id)
+            }
             recipes
         } catch (e: Exception) {
             android.util.Log.e("RecipeRepository", "Error fetching recipes", e)
-            e.printStackTrace()
             emptyList()
         }
     }
