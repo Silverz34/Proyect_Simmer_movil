@@ -12,8 +12,8 @@ import com.alixmontesinos.app_simmer.ui.screens.UserApp.Home
 import com.alixmontesinos.app_simmer.ui.screens.UserAuth.Welcome
 import androidx.navigation.navArgument
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.collectAsState
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -50,7 +50,7 @@ fun AppPrueba(){
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = OtrasRutas.SplashScreen2.route,
+            startDestination = OtrasRutas.Welcome.route,
             modifier = androidx.compose.ui.Modifier.padding(paddingValues)
         ) {
 
@@ -65,6 +65,10 @@ fun AppPrueba(){
             }
             composable(route = OtrasRutas.Register.route) {
                 Register(navController)
+            }
+            composable(route = OtrasRutas.RecipeDetail.route){
+                val recipeId = it.arguments?.getString("recipeId") ?: ""
+                RecipeDetailScreen(navController, recipeId)
             }
 
             // Bottom Bar Routes
