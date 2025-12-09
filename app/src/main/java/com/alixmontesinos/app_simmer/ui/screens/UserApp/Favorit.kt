@@ -37,7 +37,7 @@ import com.alixmontesinos.app_simmer.ui.navigation.OtrasRutas
 
 // Dummy data class for favorites
 data class FavoriteRecipe(
-    val id: Int,
+    val id: String,
     val imageRes: Int,
     val title: String,
     val rating: Double,
@@ -54,9 +54,9 @@ fun Favorit(navController: NavController) { // Add NavController
     // Dummy list of favorite recipes
     val favoriteRecipes = remember {
         listOf(
-            FavoriteRecipe(1, R.drawable.rigatoni_pasta, "Rigatoni Pasta", 4.9, "35 min", "Media", "Alix M"),
-            FavoriteRecipe(2, R.drawable.category_breakfast, "Pancakes", 4.8, "20 min", "Fácil", "John D"),
-            FavoriteRecipe(3, R.drawable.category_dinner, "Salmon", 4.9, "40 min", "Media", "Jane S")
+            FavoriteRecipe("1", R.drawable.rigatoni_pasta, "Rigatoni Pasta", 4.9, "35 min", "Media", "Alix M"),
+            FavoriteRecipe("2", R.drawable.category_breakfast, "Pancakes", 4.8, "20 min", "Fácil", "John D"),
+            FavoriteRecipe("3", R.drawable.category_dinner, "Salmon", 4.9, "40 min", "Media", "Jane S")
         )
     }
 

@@ -35,8 +35,11 @@ import androidx.navigation.NavController
 import com.alixmontesinos.app_simmer.R
 import com.alixmontesinos.app_simmer.ui.ViewModel.Category
 import com.alixmontesinos.app_simmer.ui.ViewModel.HomeViewModel
-import com.alixmontesinos.app_simmer.ui.ViewModel.Recipe
+import com.alixmontesinos.app_simmer.model.Recipe
 import com.alixmontesinos.app_simmer.ui.navigation.OtrasRutas
+import coil.compose.AsyncImage
+import androidx.compose.ui.platform.LocalContext
+import coil.request.ImageRequest
 import kotlinx.coroutines.launch
 
 val YellowHeader = Color(0xFFFFC93A)
@@ -353,17 +356,22 @@ fun PopularRecipesSection(recipes: List<Recipe>, navController: NavController, m
 
 fun PopularRecipeItem(recipe: Recipe, onClick: () -> Unit) {
     Column(modifier = Modifier.clickable(onClick = onClick)) {
-        Image(
-            painter = painterResource(id = recipe.imageRes),
-            contentDescription = recipe.name,
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(if (recipe.imageUrl.isNotEmpty()) recipe.imageUrl else recipe.imageRes ?: R.drawable.cargarimagen)
+                .crossfade(true)
+                .build(),
+            contentDescription = recipe.title,
             contentScale = ContentScale.Crop,
+            placeholder = painterResource(id = R.drawable.cargarimagen),
+            error = painterResource(id = R.drawable.cargarimagen),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(180.dp)
                 .clip(RoundedCornerShape(16.dp))
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = recipe.name, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-        Text(text = recipe.description, color = Color.Gray, fontSize = 12.sp)
+        Text(text = recipe.title, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+        Text(text = recipe.description, color = Color.Gray, fontSize = 12.sp, maxLines = 2)
     }
 }
