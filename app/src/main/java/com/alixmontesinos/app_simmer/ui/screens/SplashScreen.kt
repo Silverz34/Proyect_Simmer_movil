@@ -52,7 +52,7 @@ fun SplashScreen() {
             text = "simmer",
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = 150.dp), // Puedes ajustar esta distancia
+                .padding(top = 150.dp),
             color = Color.Black
         )
 

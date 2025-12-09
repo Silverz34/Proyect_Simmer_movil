@@ -9,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.alixmontesinos.app_simmer.ui.navigation.AppPrueba
+
 import com.alixmontesinos.app_simmer.ui.navigation.MainScreen
 import com.alixmontesinos.app_simmer.ui.screens.UserApp.CrearReceta
 import com.alixmontesinos.app_simmer.ui.screens.UserAuth.Login
@@ -27,9 +27,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //MainScreen()
+                    MainScreen()
                     //CrearReceta(onBackClick = {})
-                    AppPrueba()
+
 
                 }
 

@@ -16,6 +16,7 @@ import com.alixmontesinos.app_simmer.ui.components.BottomNavigation.items_menu
 import com.alixmontesinos.app_simmer.ui.screens.*
 import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.EditarPerfil
 import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.Perfil
+import com.alixmontesinos.app_simmer.ui.screens.UserApp.CrearReceta
 import com.alixmontesinos.app_simmer.ui.screens.UserApp.Favorit
 import com.alixmontesinos.app_simmer.ui.screens.UserApp.Home
 import com.alixmontesinos.app_simmer.ui.screens.UserAuth.Login
@@ -31,8 +32,13 @@ fun NavHostContainer(
     Box(modifier = Modifier.padding(padding)) {
         NavHost(
             navController = navController,
-            startDestination = OtrasRutas.Welcome.route
+            startDestination = OtrasRutas.SplashScreen2.route
         ) {
+
+            composable (OtrasRutas.SplashScreen2.route){
+                SplashScreen2(navController)
+            }
+
             composable(route = OtrasRutas.Welcome.route) {
                 Welcome(navController)
             }
@@ -44,8 +50,13 @@ fun NavHostContainer(
             }
 
             composable(items_menu.Home.ruta) { Home(navController) }
-            composable(items_menu.Crear.ruta) { Crear() }
+
+            composable (route= OtrasRutas.CrearReceta.route){
+                CrearReceta(onBackClick = { navController.popBackStack() })
+            }
+
             composable(items_menu.Favorit.ruta) { Favorit(navController) }
+
             composable(items_menu.Perfil.ruta) {
                 Perfil(
                     onEditClick = { navController.navigate(OtrasRutas.EditarPerfil.route) }
@@ -57,16 +68,12 @@ fun NavHostContainer(
                 )
             }
             composable(
-                route = OtrasRutas.RecipeDetail.route,
+                route = "detail/{recipeId}",
                 arguments = listOf(navArgument("recipeId") { type = NavType.IntType })
-            ) {
-                val recipeId = it.arguments?.getInt("recipeId") ?: 0
+            ) { backStackEntry ->
+                val recipeId = backStackEntry.arguments?.getInt("recipeId") ?: 0
                 RecipeDetailScreen(navController, recipeId)
             }
         }
     }
-}
-@Composable
-fun Crear() {
-    Text(text = "Crear")
 }
