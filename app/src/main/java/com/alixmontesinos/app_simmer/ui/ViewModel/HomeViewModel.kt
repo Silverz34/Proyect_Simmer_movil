@@ -1,4 +1,4 @@
-package com.alixmontesinos.app_simmer.ui.viewmodel
+package com.alixmontesinos.app_simmer.ui.ViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -44,24 +44,23 @@ class HomeViewModel : ViewModel() {
     }
 
     private fun loadData() {
-        viewModelScope.launch {
-            delay(2000)
+        viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+            // delay(2000) // Removed artificial delay
             _categories.value = listOf(
-                Category("Cena", R.drawable.category_dinner),
-                Category("Comida", R.drawable.category_lunch),
-                Category("Desayuno", R.drawable.category_breakfast),
-                Category("Postres", R.drawable.category_dessert),
-                Category("Snack", R.drawable.category_snack)
+                Category("Cena", R.drawable.user_avatar),
+                Category("Comida", R.drawable.user_avatar),
+                Category("Desayuno", R.drawable.user_avatar),
+                Category("Postres", R.drawable.user_avatar),
+                Category("Snack", R.drawable.user_avatar)
             )
 
             _allRecipes.value = listOf(
-                Recipe(1, "Huevito con arroz", "Una pequeña receta...", R.drawable.rigatoni_pasta, "15 min", "Fácil"),
-                Recipe(2, "Pollo a la brasa", "Clásico peruano", R.drawable.rigatoni_pasta, "1 h", "Media"),
-                Recipe(3, "Lomo Saltado", "Salteado de carne", R.drawable.rigatoni_pasta, "30 min", "Media"),
-                Recipe(4, "Causa Limeña", "Plato típico", R.drawable.rigatoni_pasta, "45 min", "Difícil"),
-                Recipe(5, "Aji de Gallina", "Cremoso y delicioso", R.drawable.rigatoni_pasta, "1 h", "Media"),
-                Recipe(6, "Ceviche", "Pescado fresco marinado", R.drawable.rigatoni_pasta, "30 min", "Fácil")
-
+                Recipe(1, "Huevito con arroz", "Una pequeña receta...", R.drawable.user_avatar, "15 min", "Fácil"),
+                Recipe(2, "Pollo a la brasa", "Clásico peruano", R.drawable.user_avatar, "1 h", "Media"),
+                Recipe(3, "Lomo Saltado", "Salteado de carne", R.drawable.user_avatar, "30 min", "Media"),
+                Recipe(4, "Causa Limeña", "Plato típico", R.drawable.user_avatar, "45 min", "Difícil"),
+                Recipe(5, "Aji de Gallina", "Cremoso y delicioso", R.drawable.user_avatar, "1 h", "Media"),
+                Recipe(6, "Ceviche", "Pescado fresco marinado", R.drawable.user_avatar, "30 min", "Fácil")
             )
             _popularRecipes.value = _allRecipes.value
             _isLoading.value = false

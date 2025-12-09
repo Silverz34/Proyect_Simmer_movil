@@ -1,14 +1,13 @@
 {
   "project_info": {
-    "project_number": "422340350210",
-    "firebase_url": "https://simmer-45b02-default-rtdb.firebaseio.com",
-    "project_id": "simmer-45b02",
-    "storage_bucket": "simmer-45b02.firebasestorage.app"
+    "project_number": "632872753956",
+    "project_id": "pruebita-833e5",
+    "storage_bucket": "pruebita-833e5.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:422340350210:android:ed13a381c424f39c42321b",
+        "mobilesdk_app_id": "1:632872753956:android:ec87aa035d125dffbbf1b1",
         "android_client_info": {
           "package_name": "com.alixmontesinos.app_simmer"
         }
@@ -16,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB7YKYSo3LB4dfhhoLDXJndJSXrCRtLJ1Q"
+          "current_key": "AIzaSyDjsYZSLUCLhJGWKSJ6Poxj6cIKIuO3zwY"
         }
       ],
       "services": {

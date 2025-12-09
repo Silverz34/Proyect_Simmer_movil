@@ -76,7 +76,7 @@ class  LoginViewModel : ViewModel() {
 
         uiState = uiState.copy(isLoading = true, loginError = null)
 
-        viewModelScope.launch {
+        viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
             try {
                 auth.signInWithEmailAndPassword(uiState.username, uiState.password).await()
                 uiState = uiState.copy(isLoading = false, isSuccess = true)

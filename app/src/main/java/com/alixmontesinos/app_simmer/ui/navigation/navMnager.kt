@@ -44,7 +44,7 @@ fun NavHostContainer(
             }
 
             composable(items_menu.Home.ruta) { Home(navController) }
-            composable(items_menu.Crear.ruta) { Crear() }
+            composable(items_menu.Crear.ruta) { com.alixmontesinos.app_simmer.ui.screens.UserApp.CrearReceta(onBackClick = { navController.popBackStack() }) }
             composable(items_menu.Favorit.ruta) { Favorit(navController) }
             composable(items_menu.Perfil.ruta) {
                 Perfil(
@@ -58,9 +58,9 @@ fun NavHostContainer(
             }
             composable(
                 route = OtrasRutas.RecipeDetail.route,
-                arguments = listOf(navArgument("recipeId") { type = NavType.IntType })
+                arguments = listOf(navArgument("recipeId") { type = NavType.StringType })
             ) {
-                val recipeId = it.arguments?.getInt("recipeId") ?: 0
+                val recipeId = it.arguments?.getString("recipeId") ?: ""
                 RecipeDetailScreen(navController, recipeId)
             }
         }

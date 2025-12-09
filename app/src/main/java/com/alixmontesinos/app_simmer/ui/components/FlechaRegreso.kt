@@ -22,7 +22,7 @@ fun FlechaRegreso(
 ) {
     Box(
         modifier = Modifier
-            .padding(top = 40.dp, start = 50.dp)
+            .padding(top = 30.dp, start = 50.dp)
             .size(50.dp)
             .shadow(6.dp, CircleShape)
             .background(Color.White, CircleShape)
