@@ -140,7 +140,7 @@ fun CrearReceta(onBackClick: () -> Unit,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .height(670.dp),
+                .height(600.dp),
             shape = RoundedCornerShape(
                 topStart = 30.dp,
                 topEnd = 30.dp

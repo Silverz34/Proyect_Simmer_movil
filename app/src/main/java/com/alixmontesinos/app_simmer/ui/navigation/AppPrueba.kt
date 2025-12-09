@@ -62,6 +62,10 @@ fun AppPrueba(){
             composable(route = OtrasRutas.Register.route){
                 Register(navController)
             }
+            composable(route = OtrasRutas.RecipeDetail.route){
+                val recipeId = it.arguments?.getString("recipeId") ?: ""
+                RecipeDetailScreen(navController, recipeId)
+            }
 
 
 
@@ -78,6 +82,7 @@ fun AppPrueba(){
                     onEditClick = { navController.navigate(OtrasRutas.EditarPerfil.route) }
                 )
             }
+
 
 
             // PRO TIP: Removing duplicate routes if any exist in the original block

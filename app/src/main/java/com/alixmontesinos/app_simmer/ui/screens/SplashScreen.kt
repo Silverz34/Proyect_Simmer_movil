@@ -35,7 +35,7 @@ import kotlinx.coroutines.delay
 fun SplashScreen2(navController: NavHostController){
 
     LaunchedEffect(key1 = true){
-        delay(3500)
+        delay(1500)
         navController.popBackStack()
         
         val user = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
