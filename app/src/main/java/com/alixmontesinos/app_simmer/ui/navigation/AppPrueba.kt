@@ -46,7 +46,7 @@ fun AppPrueba(){
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = OtrasRutas.SplashScreen2.route,
+            startDestination = OtrasRutas.Welcome.route,
             modifier = androidx.compose.ui.Modifier.padding(paddingValues)
         ) {
 
