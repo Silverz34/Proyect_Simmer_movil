@@ -13,17 +13,18 @@ import com.alixmontesinos.app_simmer.ui.screens.UserAuth.Welcome
 import androidx.navigation.navArgument
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.alixmontesinos.app_simmer.ui.components.BottomNavigation.BottomNavigationBar
 import com.alixmontesinos.app_simmer.ui.components.BottomNavigation.items_menu
-import androidx.compose.runtime.collectAsState
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.EditarDescrip
 import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.EditarPerfil
 import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.Perfil
+import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.PerfilRoute
 import com.alixmontesinos.app_simmer.ui.screens.RecipeDetailScreen
-import com.alixmontesinos.app_simmer.ui.screens.ViewModelScreen.DescriptionViewModel
+import com.alixmontesinos.app_simmer.ui.screens.ViewModelScreen.ProfileViewModel
 
 
 @Composable
@@ -31,8 +32,8 @@ fun AppPrueba(){
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    val descriptionViewModel: DescriptionViewModel = viewModel()
-    val descripcion by descriptionViewModel.descripcion.collectAsState()
+    val profileViewModel: ProfileViewModel = viewModel()
+    val profileState by profileViewModel.uiState.collectAsState()
 
     val bottomBarRoutes = listOf(
         items_menu.Home.ruta,
@@ -54,44 +55,48 @@ fun AppPrueba(){
             modifier = androidx.compose.ui.Modifier.padding(paddingValues)
         ) {
 
-            composable (OtrasRutas.SplashScreen2.route){
+            composable(OtrasRutas.SplashScreen2.route) {
                 SplashScreen2(navController)
             }
-            composable (route = OtrasRutas.Welcome.route){
+            composable(route = OtrasRutas.Welcome.route) {
                 Welcome(navController)
             }
-            composable(route = OtrasRutas.Login.route){
+            composable(route = OtrasRutas.Login.route) {
                 Login(navController)
             }
-            composable(route = OtrasRutas.Register.route){
+            composable(route = OtrasRutas.Register.route) {
                 Register(navController)
             }
 
             // Bottom Bar Routes
             composable(items_menu.Home.ruta) { Home(navController) }
             composable(items_menu.Crear.ruta) { CrearReceta(onBackClick = { navController.popBackStack() }) }
-            composable(items_menu.Favorit.ruta) { com.alixmontesinos.app_simmer.ui.screens.UserApp.Favorit(navController) }
+            composable(items_menu.Favorit.ruta) {
+                com.alixmontesinos.app_simmer.ui.screens.UserApp.Favorit(
+                    navController
+                )
+            }
             composable(items_menu.Perfil.ruta) {
                 Perfil(
-                    onEditClick = {navController.navigate(OtrasRutas.EditarPerfil.route)},
-                    descripcion
+                    uiState = profileState,
+                    onEditClick = { navController.navigate(OtrasRutas.EditarPerfil.route) }
                 )
             }
 
-
             composable(route = OtrasRutas.EditarPerfil.route) {
                 EditarPerfil(
-                    currentDescription = descripcion,
-                    onDescriptionClick = {navController.navigate(OtrasRutas.EditarDescrip.route)},
+                    uiState = profileState,
+                    onPhotoChange = { uri -> profileViewModel.uploadProfilePicture(uri) },
+                    onDescriptionClick = { navController.navigate(OtrasRutas.EditarDescrip.route) }, // Faltaba esto
                     onBackClick = { navController.popBackStack() }
                 )
             }
 
             composable(route = OtrasRutas.EditarDescrip.route) {
                 EditarDescrip(
-                    currentDescription = descripcion,
+                    currentDescription = profileState.description,
                     onSaveClick = { nuevoTexto ->
-                        descriptionViewModel.updateDescripcion(nuevoTexto)
+                        profileViewModel.updateDescription(nuevoTexto)
                         navController.popBackStack()
                     },
                     onCancelClick = { navController.popBackStack() }

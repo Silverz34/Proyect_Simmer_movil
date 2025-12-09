@@ -1,8 +1,6 @@
 package com.alixmontesinos.app_simmer.ui.screens.PerfilUser
 
-import android.R.attr.description
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -28,16 +25,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.alixmontesinos.app_simmer.model.perfilUser
 import com.alixmontesinos.app_simmer.ui.components.FotoPerfilUniversal
 import com.alixmontesinos.app_simmer.ui.components.RecipeCard
+import com.alixmontesinos.app_simmer.ui.screens.ViewModelScreen.ProfileViewModel
 
 
 //de mientras
@@ -59,8 +60,8 @@ val listaRecetasPrueba = listOf(
 
 
 @Composable
-fun Perfil(onEditClick: () -> Unit,
-           description: String) {
+fun Perfil(uiState: perfilUser,
+           onEditClick: () -> Unit) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -79,11 +80,14 @@ fun Perfil(onEditClick: () -> Unit,
                         .padding(top = 110.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    ProfileHeader()
+                    ProfileHeader(
+                        name = uiState.username,
+                        photoUrl = uiState.photoUrl
+                    )
                     Spacer(modifier = Modifier.height(16.dp))
                     ProfileStats()
                     Spacer(modifier = Modifier.height(24.dp))
-                    ProfileDescription(description)
+                    ProfileDescription(uiState.description)
                     Spacer(modifier = Modifier.height(24.dp))
                     EditProfileButton(onEditClick = onEditClick)
                     Spacer(modifier = Modifier.height(30.dp))
@@ -123,7 +127,11 @@ fun ProfileTopBar() {
 }
 
 @Composable
-fun ProfileHeader() {
+fun ProfileHeader(
+    name : String,
+    photoUrl : String
+
+) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -135,7 +143,7 @@ fun ProfileHeader() {
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            text = "Alix M",
+            text = name,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
         )
@@ -222,3 +230,4 @@ fun VerticalDivider(
         modifier = modifier.background(color)
     )
 }
+
