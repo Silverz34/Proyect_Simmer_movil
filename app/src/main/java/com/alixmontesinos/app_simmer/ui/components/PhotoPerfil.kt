@@ -16,15 +16,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.alixmontesinos.app_simmer.R
 
 @Composable
 fun FotoPerfilUniversal(
     modifier: Modifier = Modifier,
     imageRes: Int = R.drawable.profile,
+    photoUrl: String? = null,
     size: Dp,
     hasBorder: Boolean = false,
     showCameraIcon: Boolean = false
@@ -33,9 +37,13 @@ fun FotoPerfilUniversal(
         modifier = modifier.size(size),
         contentAlignment = Alignment.Center
     ) {
-
-        Image(
-            painter = painterResource(id = imageRes),
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(if (!photoUrl.isNullOrEmpty()) photoUrl else imageRes)
+                .crossfade(true)
+                .build(),
+            placeholder = painterResource(id = imageRes),
+            error = painterResource(id = imageRes),
             contentDescription = "Foto de perfil",
             contentScale = ContentScale.Crop,
             modifier = Modifier

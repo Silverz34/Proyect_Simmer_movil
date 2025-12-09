@@ -22,7 +22,6 @@ import com.alixmontesinos.app_simmer.ui.components.BottomNavigation.items_menu
 import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.EditarDescrip
 import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.EditarPerfil
 import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.Perfil
-import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.PerfilRoute
 import com.alixmontesinos.app_simmer.ui.screens.RecipeDetailScreen
 import com.alixmontesinos.app_simmer.ui.screens.ViewModelScreen.ProfileViewModel
 
