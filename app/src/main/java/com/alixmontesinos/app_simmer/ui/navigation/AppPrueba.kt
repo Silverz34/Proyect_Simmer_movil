@@ -40,7 +40,7 @@ fun AppPrueba(){
         }
 
         composable (route= OtrasRutas.Home.route){
-            Home(onBackClick = { navController.popBackStack() })
+            Home(navController = navController)
         }
 
 

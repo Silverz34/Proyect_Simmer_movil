@@ -1,4 +1,4 @@
-package com.alixmontesinos.app_simmer.ui.ViewModel
+package com.alixmontesinos.app_simmer.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -47,23 +47,13 @@ class HomeViewModel : ViewModel() {
         viewModelScope.launch {
             delay(2000)
             _categories.value = listOf(
-                Category("Cena", R.drawable.user_avatar),
-                Category("Comida", R.drawable.user_avatar),
-                Category("Desayuno", R.drawable.user_avatar),
-                Category("Postres", R.drawable.user_avatar),
-                Category("Snack", R.drawable.user_avatar)
+                Category("Cena", R.drawable.category_dinner),
+                Category("Comida", R.drawable.category_lunch),
+                Category("Desayuno", R.drawable.category_breakfast),
+                Category("Postres", R.drawable.category_dessert),
+                Category("Snack", R.drawable.category_snack)
             )
-<<<<<<< HEAD
 
-            // Updated popular recipes with more data
-            _popularRecipes.value = listOf(
-                Recipe("Huevito con arroz", "Una pequeña receta...", R.drawable.user_avatar),
-                Recipe("Pollo a la brasa", "Clásico peruano", R.drawable.user_avatar),
-                Recipe("Lomo Saltado", "Salteado de carne", R.drawable.user_avatar),
-                Recipe("Causa Limeña", "Plato típico", R.drawable.user_avatar),
-                Recipe("Aji de Gallina", "Cremoso y delicioso", R.drawable.user_avatar),
-                Recipe("Ceviche", "Pescado fresco marinado", R.drawable.user_avatar)
-=======
             _allRecipes.value = listOf(
                 Recipe(1, "Huevito con arroz", "Una pequeña receta...", R.drawable.rigatoni_pasta, "15 min", "Fácil"),
                 Recipe(2, "Pollo a la brasa", "Clásico peruano", R.drawable.rigatoni_pasta, "1 h", "Media"),
@@ -71,7 +61,7 @@ class HomeViewModel : ViewModel() {
                 Recipe(4, "Causa Limeña", "Plato típico", R.drawable.rigatoni_pasta, "45 min", "Difícil"),
                 Recipe(5, "Aji de Gallina", "Cremoso y delicioso", R.drawable.rigatoni_pasta, "1 h", "Media"),
                 Recipe(6, "Ceviche", "Pescado fresco marinado", R.drawable.rigatoni_pasta, "30 min", "Fácil")
->>>>>>> 4c8a5ffd3f669484e5eb16ef464536c15001bd81
+
             )
             _popularRecipes.value = _allRecipes.value
             _isLoading.value = false

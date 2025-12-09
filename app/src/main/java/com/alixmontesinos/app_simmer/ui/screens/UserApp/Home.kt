@@ -33,9 +33,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.alixmontesinos.app_simmer.R
-import com.alixmontesinos.app_simmer.ui.ViewModel.Category
-import com.alixmontesinos.app_simmer.ui.ViewModel.HomeViewModel
-import com.alixmontesinos.app_simmer.ui.ViewModel.Recipe
+import com.alixmontesinos.app_simmer.ui.viewmodel.Category
+import com.alixmontesinos.app_simmer.ui.viewmodel.HomeViewModel
+import com.alixmontesinos.app_simmer.ui.viewmodel.Recipe
 import com.alixmontesinos.app_simmer.ui.navigation.OtrasRutas
 import kotlinx.coroutines.launch
 
