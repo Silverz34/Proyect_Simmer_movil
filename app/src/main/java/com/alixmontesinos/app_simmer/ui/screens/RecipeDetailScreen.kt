@@ -65,7 +65,7 @@ fun RecipeDetailScreen(
                         .align(Alignment.TopCenter)
                 )
 
-                // 2. Overlay Buttons (Back and Bookmark)
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

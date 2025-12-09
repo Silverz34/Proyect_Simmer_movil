@@ -120,40 +120,6 @@ fun FavoriteTopBar() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Bottom Row: Search and Filter
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            TextField(
-                value = searchQuery,
-                onValueChange = { searchQuery = it },
-                placeholder = { Text("Buscar receta", color = Color.Gray) },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Buscar") },
-                modifier = Modifier
-                    .weight(1f)
-                    .clip(RoundedCornerShape(12.dp)),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent
-                ),
-                singleLine = true
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            IconButton(
-                onClick = { /* Handle filter click */ },
-                modifier = Modifier
-                    .background(Color.White, shape = RoundedCornerShape(12.dp))
-                    .size(56.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.FilterList,
-                    contentDescription = "Filtro"
-                )
-            }
-        }
+        // Search and Filter removed as requested
     }
 }
