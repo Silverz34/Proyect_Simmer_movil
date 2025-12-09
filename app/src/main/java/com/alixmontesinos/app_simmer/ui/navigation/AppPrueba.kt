@@ -68,7 +68,12 @@ fun AppPrueba(){
             }
 
             // Bottom Bar Routes
-            composable(items_menu.Home.ruta) { Home(navController) }
+            composable(items_menu.Home.ruta) {
+                Home(
+                navController = navController,
+                username = profileState.username,
+                photoUrl = profileState.photoUrl)
+            }
             composable(items_menu.Crear.ruta) { CrearReceta(onBackClick = { navController.popBackStack() }) }
             composable(items_menu.Favorit.ruta) {
                 com.alixmontesinos.app_simmer.ui.screens.UserApp.Favorit(
