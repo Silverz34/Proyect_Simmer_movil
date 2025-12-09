@@ -41,14 +41,20 @@ import coil.compose.AsyncImage
 import androidx.compose.ui.platform.LocalContext
 import coil.request.ImageRequest
 import kotlinx.coroutines.launch
+// IMPORTANTE: Importar tu componente de foto universal
+import com.alixmontesinos.app_simmer.ui.components.FotoPerfilUniversal
 
 val YellowHeader = Color(0xFFFFC93A)
 val BackgroundColor = Color(0xFFFDFCF7)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-
-fun Home(navController: NavController, homeViewModel: HomeViewModel = viewModel()) {
+fun Home(
+    navController: NavController,
+    homeViewModel: HomeViewModel = viewModel(),
+    username: String,
+    photoUrl: String
+) {
     val isLoading by homeViewModel.isLoading.collectAsStateWithLifecycle()
     val categories by homeViewModel.categories.collectAsStateWithLifecycle()
     val popularRecipes by homeViewModel.popularRecipes.collectAsStateWithLifecycle()
@@ -58,7 +64,13 @@ fun Home(navController: NavController, homeViewModel: HomeViewModel = viewModel(
     var showBottomSheet by remember { mutableStateOf(false) }
 
     Scaffold(
-        topBar = { TopBarSection(onFilterClick = { showBottomSheet = true }) },
+        topBar = {
+            TopBarSection(
+                onFilterClick = { showBottomSheet = true },
+                username = username,
+                photoUrl = photoUrl
+            )
+        },
         containerColor = BackgroundColor
     ) { paddingValues ->
         if (isLoading) {
@@ -97,7 +109,11 @@ fun Home(navController: NavController, homeViewModel: HomeViewModel = viewModel(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarSection(onFilterClick: () -> Unit) {
+fun TopBarSection(
+    onFilterClick: () -> Unit,
+    username: String,
+    photoUrl: String
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -111,15 +127,20 @@ fun TopBarSection(onFilterClick: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(
-                    painter = painterResource(id = R.drawable.user_avatar),
-                    contentDescription = "Avatar de usuario",
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(CircleShape)
+                FotoPerfilUniversal(
+                    size = 48.dp,
+                    photoUrl = photoUrl,
+                    hasBorder = false,
+                    showCameraIcon = false
                 )
+
                 Spacer(modifier = Modifier.width(12.dp))
-                Text(text = "Juan Pérez", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.Black)
+                Text(
+                    text = if(username.isNotEmpty()) username else "Usuario",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    color = Color.Black
+                )
             }
             IconButton(
                 onClick = { /* Acción para notificaciones */ },

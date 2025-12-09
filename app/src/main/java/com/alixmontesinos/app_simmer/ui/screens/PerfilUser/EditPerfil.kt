@@ -1,11 +1,15 @@
 package com.alixmontesinos.app_simmer.ui.screens.PerfilUser
 
+import android.net.Uri
 import android.window.BackEvent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,10 +24,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.alixmontesinos.app_simmer.R
+import com.alixmontesinos.app_simmer.model.perfilUser
 import com.alixmontesinos.app_simmer.ui.components.FlechaRegreso
 import com.alixmontesinos.app_simmer.ui.components.FotoPerfilUniversal
 
@@ -48,7 +56,15 @@ val TextBlack = Color(0xFF1C1C1E)
 val LinkBlue = Color(0xFF2196F3)
 
 @Composable
-fun EditarPerfil(onBackClick: () -> Unit){
+fun EditarPerfil(uiState: perfilUser,
+                 onPhotoChange: (Uri) -> Unit,
+                 onDescriptionClick: () -> Unit,
+                 onBackClick: () -> Unit){
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let { onPhotoChange(it) }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -58,11 +74,16 @@ fun EditarPerfil(onBackClick: () -> Unit){
     ) {
         HeaderSection(onBackClick = onBackClick)
         Spacer(modifier = Modifier.height(24.dp))
-        ProfilePhoto()
+        ProfilePhoto(
+            onChangeClick = { launcher.launch("image/*")}
+        )
         Spacer(modifier = Modifier.height(32.dp))
-        NamesCardSection()
+        NamesCardSection(name = uiState.username)
         Spacer(modifier = Modifier.height(24.dp))
-        BasicInfoSection()
+        BasicInfoSection(
+            currentDescription = uiState.description,
+            onDescriptionClick = onDescriptionClick
+        )
         Spacer(modifier = Modifier.height(32.dp))
     }
 }
@@ -95,24 +116,24 @@ fun HeaderSection(
 }
 
 @Composable
-fun ProfilePhoto() {
+fun ProfilePhoto(onChangeClick: () -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        FotoPerfilUniversal(
-            size = 120.dp,
-            hasBorder = false,
-            showCameraIcon = true
-        )
+        Button(
+            onClick = onChangeClick,
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+            contentPadding = PaddingValues(0.dp)
+        ) {
+            FotoPerfilUniversal(size = 120.dp, hasBorder = false, showCameraIcon = true)
+        }
+
         Spacer(modifier = Modifier.height(12.dp))
-        Text(
-            text = "Cambiar foto",
-            color = LinkBlue,
-            fontWeight = FontWeight.Medium
-        )
+        TextButton(onClick = onChangeClick) {
+            Text(text = "Cambiar foto", color = LinkBlue, fontWeight = FontWeight.Medium)
+        }
     }
 }
-
 @Composable
-fun NamesCardSection() {
+fun NamesCardSection(name : String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -122,15 +143,16 @@ fun NamesCardSection() {
         shape = RoundedCornerShape(16.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            ProfileInfoRow(label = "Nombre", value = "Alix M")
-            Spacer(modifier = Modifier.height(16.dp))
-            ProfileInfoRow(label = "Otro nombre", value = "Tamalera")
+            ProfileInfoRow(label = "Nombre", value = name)
         }
     }
 }
 
 @Composable
-fun BasicInfoSection() {
+fun BasicInfoSection(
+    currentDescription: String,
+    onDescriptionClick: () -> Unit
+) {
     Column(modifier = Modifier.padding(horizontal = 24.dp)) {
         Text(
             text = "Información básica",
@@ -139,6 +161,7 @@ fun BasicInfoSection() {
             modifier = Modifier.padding(bottom = 12.dp, start = 4.dp)
         )
         Card(
+            onClick = onDescriptionClick,
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = Color.White),
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
@@ -161,7 +184,7 @@ fun BasicInfoSection() {
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt...",
+                        text = currentDescription,
                         color = TextBlack,
                         fontSize = 14.sp,
                         maxLines = 3,

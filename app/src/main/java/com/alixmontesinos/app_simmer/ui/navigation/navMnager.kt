@@ -23,7 +23,7 @@ import com.alixmontesinos.app_simmer.ui.screens.UserAuth.Register
 import com.alixmontesinos.app_simmer.ui.screens.UserAuth.Welcome
 
 
-@Composable
+/*@Composable
 fun NavHostContainer(
     navController: NavHostController,
     padding: PaddingValues
@@ -69,4 +69,4 @@ fun NavHostContainer(
 @Composable
 fun Crear() {
     Text(text = "Crear")
-}
+}*/

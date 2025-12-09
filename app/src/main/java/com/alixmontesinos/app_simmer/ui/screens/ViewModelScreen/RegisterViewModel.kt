@@ -88,11 +88,13 @@ class RegisterViewModel : ViewModel() {
                 val user = authResult.user
 
                 if (user != null) {
-                    // 2. Guardar datos adicionales en Firestore
+                    // hice cambios para perfil
                     val userData = hashMapOf(
                         "uid" to user.uid,
                         "username" to uiState.username,
                         "email" to uiState.email,
+                        "description" to "hola, soy nuevo en Simmer",
+                        "photoUrl" to "",
                         "createdAt" to System.currentTimeMillis()
                     )
 

@@ -43,10 +43,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.alixmontesinos.app_simmer.R
 import com.alixmontesinos.app_simmer.ui.components.FlechaRegreso
 import com.alixmontesinos.app_simmer.ui.navigation.OtrasRutas
+import com.alixmontesinos.app_simmer.ui.screens.ViewModelScreen.RegisterViewModel
 import com.alixmontesinos.app_simmer.ui.theme.ItimFont
 import com.alixmontesinos.app_simmer.ui.theme.NunitoSansSemiBold
 import com.alixmontesinos.app_simmer.ui.theme.YellowT
@@ -56,7 +58,7 @@ import com.alixmontesinos.app_simmer.ui.theme.YellowT
 @Composable
 fun Register (
     navController: NavController,
-    viewModel: com.alixmontesinos.app_simmer.ui.screens.ViewModelScreen.RegisterViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: RegisterViewModel = viewModel()
 ){
     val state = viewModel.uiState
 
