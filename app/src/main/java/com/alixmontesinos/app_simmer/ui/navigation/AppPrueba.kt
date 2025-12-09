@@ -12,10 +12,13 @@ import com.alixmontesinos.app_simmer.ui.screens.UserApp.Home
 import com.alixmontesinos.app_simmer.ui.screens.UserAuth.Welcome
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.alixmontesinos.app_simmer.ui.components.BottomNavigation.items_menu
+import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.EditarPerfil
+import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.Perfil
 import com.alixmontesinos.app_simmer.ui.screens.RecipeDetailScreen
 
 
-/*
+
 @Composable
 fun AppPrueba(){
     val navController= rememberNavController()
@@ -42,6 +45,19 @@ fun AppPrueba(){
             Home(navController = navController)
         }
 
+        composable(items_menu.Perfil.ruta) {
+            Perfil(
+                onEditClick = { navController.navigate(OtrasRutas.EditarPerfil.route) }
+            )
+        }
+        composable(route = OtrasRutas.EditarPerfil.route) {
+            EditarPerfil(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+
+
         composable(
             route = "detail/{recipeId}",
             arguments = listOf(navArgument("recipeId") { type = NavType.IntType })
@@ -50,4 +66,4 @@ fun AppPrueba(){
             RecipeDetailScreen(navController, recipeId)
         }
     }
-}*/
+}
