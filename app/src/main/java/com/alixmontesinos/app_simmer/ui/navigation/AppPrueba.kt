@@ -10,15 +10,12 @@ import com.alixmontesinos.app_simmer.ui.screens.SplashScreen2
 import com.alixmontesinos.app_simmer.ui.screens.UserApp.CrearReceta
 import com.alixmontesinos.app_simmer.ui.screens.UserApp.Home
 import com.alixmontesinos.app_simmer.ui.screens.UserAuth.Welcome
-import com.alixmontesinos.app_simmer.ui.navigation.OtrasRutas
-import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.BottomAppBar
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.compose.runtime.getValue
-import com.alixmontesinos.app_simmer.ui.components.BottomNavigation.BottomNavigationBar
 import com.alixmontesinos.app_simmer.ui.components.BottomNavigation.items_menu
+import com.alixmontesinos.app_simmer.ui.screens.PerfilUser.EditarDescrip
 import com.alixmontesinos.app_simmer.ui.screens.RecipeDetailScreen
 
 
@@ -78,20 +75,18 @@ fun AppPrueba(){
                 )
             }
 
-
-            // PRO TIP: Removing duplicate routes if any exist in the original block
-            // However, looking at original file, "OtrasRutas.Home" was mapped to Home(navController)
-            // and items_menu.Home.ruta is "Home".
-            // OtrasRutas.Home.route needs to differ or match. "Home" vs "home" vs "items_menu.Home.ruta".
-            // Assuming OtrasRutas.Home.route is "Home" same as items_menu.Home.ruta.
-            
             composable (route = OtrasRutas.EditarPerfil.route) {
                 com.alixmontesinos.app_simmer.ui.screens.PerfilUser.EditarPerfil(
                     onBackClick = { navController.popBackStack() }
                 )
             }
 
-            // Dentro de tu NavHost
+           /* composable(route = OtrasRutas.EditarDescrip.route ){
+                EditarDescrip(
+
+                )
+            }*/
+
             composable(
                 route = "detail/{recipeId}", // Definimos que acepta un parámetro
                 arguments = listOf(navArgument("recipeId") { type = androidx.navigation.NavType.StringType })
