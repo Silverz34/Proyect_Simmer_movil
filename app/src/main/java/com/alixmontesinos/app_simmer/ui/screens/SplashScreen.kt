@@ -88,9 +88,9 @@ fun SplashScreen() {
             // Aplica los modificadores de alineación y tamaño
             modifier = Modifier
                 .align  (Alignment.BottomCenter)
-                .offset(0.dp,-400.dp)
-                .width(500.dp)
-                .height(500.dp) // Ajusta la altura de la imagen
+                .offset(0.dp,-  200.dp)
+                .width(400.dp)
+                .height(400.dp) // Ajusta la altura de la imagen
         )
     }
 }
