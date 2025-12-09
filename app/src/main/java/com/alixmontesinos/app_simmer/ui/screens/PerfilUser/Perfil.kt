@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -34,34 +36,74 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alixmontesinos.app_simmer.ui.components.FotoPerfilUniversal
+import com.alixmontesinos.app_simmer.ui.components.RecipeCard
+
+
+//de mientras
+data class RecetaUiModel(
+    val id: Int,
+    val imageRes: Int,
+    val title: String,
+    val rating: Double,
+    val time: String,
+    val difficulty: String,
+    val author: String
+)
+
+val listaRecetasPrueba = listOf(
+    RecetaUiModel(1, com.alixmontesinos.app_simmer.R.drawable.ic_launcher_background, "Tacos al Pastor", 4.8, "45 min", "Medio", "Alix M"),
+    RecetaUiModel(2, com.alixmontesinos.app_simmer.R.drawable.ic_launcher_background, "Pozole Rojo", 5.0, "90 min", "Difícil", "Alix M"),
+    RecetaUiModel(3, com.alixmontesinos.app_simmer.R.drawable.ic_launcher_background, "Guacamole", 4.5, "10 min", "Fácil", "Alix M")
+)
+
 
 @Composable
 fun Perfil(onEditClick: () -> Unit) {
-    Box(
-        modifier = Modifier.fillMaxSize()
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFFAFAFA)),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize() ,
+        item {
+            Box(
+                contentAlignment = Alignment.TopCenter
+            ) {
+
+                ProfileTopBar()
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 110.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            ProfileTopBar()
-
-            ProfileHeader()
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            ProfileStats()
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            ProfileDescription()
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            EditProfileButton(
-               onEditClick = onEditClick
+                ) {
+                    ProfileHeader()
+                    Spacer(modifier = Modifier.height(16.dp))
+                    ProfileStats()
+                    Spacer(modifier = Modifier.height(24.dp))
+                    ProfileDescription()
+                    Spacer(modifier = Modifier.height(24.dp))
+                    EditProfileButton(onEditClick = onEditClick)
+                    Spacer(modifier = Modifier.height(30.dp))
+                }
+            }
+        }
+        items(listaRecetasPrueba) { receta ->
+            RecipeCard(
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+                imageRes = receta.imageRes,
+                title = receta.title,
+                rating = receta.rating,
+                time = receta.time,
+                difficulty = receta.difficulty,
+                author = receta.author
             )
         }
+        item {
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+
+
     }
 }
 
@@ -71,6 +113,7 @@ fun ProfileTopBar() {
         modifier = Modifier
             .fillMaxWidth()
             .padding( horizontal = 20.dp)
+            .padding(top = 20.dp)
             .height(150.dp)
             .background(Color(0xFFFFCA28),
              shape = RoundedCornerShape(20.dp))
@@ -84,23 +127,21 @@ fun ProfileHeader() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         FotoPerfilUniversal(
-            modifier = Modifier.offset(y = (-50).dp),
             size = 100.dp,
             hasBorder = true,
             showCameraIcon = false
         )
+        Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = "Alix M",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.offset(y = (-40).dp)
         )
-
         Text(
             text = "Tamalera",
             fontSize = 14.sp,
             color = Color.Gray,
-            modifier = Modifier.offset(y = (-35).dp)
+
         )
     }
 }
@@ -110,28 +151,13 @@ fun ProfileStats() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 32.dp)
-            .offset(y = (-20).dp),
+            .padding(horizontal = 32.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         StatItem(number = "8", label = "Recetas")
-
-        VerticalDivider(
-            modifier = Modifier
-                .height(40.dp)
-                .width(1.dp),
-            color = Color.LightGray
-        )
-
+        VerticalDivider(modifier = Modifier.height(40.dp).width(1.dp))
         StatItem(number = "45", label = "Guardados")
-
-        VerticalDivider(
-            modifier = Modifier
-                .height(40.dp)
-                .width(1.dp),
-            color = Color.LightGray
-        )
-
+        VerticalDivider(modifier = Modifier.height(40.dp).width(1.dp))
         StatItem(number = "4.9 k", label = "Me gusta")
     }
 }
@@ -139,18 +165,13 @@ fun ProfileStats() {
 @Composable
 fun StatItem(number: String, label: String) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = number,
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = number,
             fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            text = label,
+            fontWeight = FontWeight.Bold)
+        Text(text = label,
             fontSize = 12.sp,
-            color = Color.Gray
-        )
+            color = Color.Gray)
     }
 }
 
