@@ -15,6 +15,7 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Scaffold
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.compose.runtime.getValue
 import com.alixmontesinos.app_simmer.ui.components.BottomNavigation.BottomNavigationBar
@@ -36,10 +37,10 @@ fun AppPrueba(){
         items_menu.Perfil.ruta
     )
 
-    androidx.compose.material3.Scaffold(
+    Scaffold(
         bottomBar = {
             if (currentRoute in bottomBarRoutes) {
-                com.alixmontesinos.app_simmer.ui.components.BottomNavigation.BottomNavigationBar(navController)
+                BottomNavigationBar(navController)
             }
         }
     ) { paddingValues ->
