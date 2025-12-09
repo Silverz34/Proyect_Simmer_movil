@@ -3,9 +3,9 @@ package com.alixmontesinos.app_simmer.ui.ViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alixmontesinos.app_simmer.R
+import com.alixmontesinos.app_simmer.data.repository.RecipeRepository
+import com.alixmontesinos.app_simmer.data.repository.RecipeRepositoryImpl
 import com.alixmontesinos.app_simmer.model.Recipe
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObjects
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,6 +14,8 @@ import kotlinx.coroutines.launch
 data class Category(val name: String, val imageRes: Int)
 
 class HomeViewModel : ViewModel() {
+
+    private val repository: RecipeRepository = RecipeRepositoryImpl()
 
     private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -31,39 +33,31 @@ class HomeViewModel : ViewModel() {
 
     private val _selectedDifficulty = MutableStateFlow<String?>(null)
     val selectedDifficulty = _selectedDifficulty.asStateFlow()
-    
-    // Firestore instance
-    private val firestore = FirebaseFirestore.getInstance()
 
     init {
         loadData()
     }
 
     private fun loadData() {
-        viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+        viewModelScope.launch {
             _categories.value = listOf(
-                Category("Cena", R.drawable.category_breakfast),
-                Category("Comida", R.drawable.category_dinner),
-                Category("Desayuno", R.drawable.category_lunch),
+                Category("Cena", R.drawable.category_dinner),
+                Category("Comida", R.drawable.category_lunch),
+                Category("Desayuno", R.drawable.category_breakfast),
                 Category("Postres", R.drawable.category_dessert),
                 Category("Snack", R.drawable.category_snack)
             )
 
-            // Fetch from Firestore with real-time updates
-            firestore.collection("recipes")
-                .addSnapshotListener { snapshot, error ->
-                    if (error != null) {
-                        _isLoading.value = false
-                        return@addSnapshotListener
-                    }
-
-                    if (snapshot != null) {
-                        val recipes = snapshot.toObjects(Recipe::class.java)
-                        _allRecipes.value = recipes
-                        _popularRecipes.value = recipes
-                        _isLoading.value = false
-                    }
-                }
+            // aca lo deberia de jalar del repository segun
+            android.util.Log.d("HomeViewModel", "Fetching recipes...")
+            val recipes = repository.getRecipes()
+            android.util.Log.d("HomeViewModel", "Fetched ${recipes.size} recipes")
+            _allRecipes.value = recipes
+            
+            // Initially show all recipes as popular or limit/filter if needed
+            _popularRecipes.value = recipes
+            
+            _isLoading.value = false
         }
     }
 

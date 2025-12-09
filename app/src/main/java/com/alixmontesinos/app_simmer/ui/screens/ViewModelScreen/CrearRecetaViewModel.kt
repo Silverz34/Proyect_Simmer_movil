@@ -7,6 +7,7 @@ import com.alixmontesinos.app_simmer.model.Recipe
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -137,6 +138,8 @@ class CrearRecetaViewModel : ViewModel() {
         }
     }
 
+    // En CrearRecetaViewModel.kt
+
     fun guardarReceta() {
         val state = _uiState.value
         val userId = auth.currentUser?.uid
@@ -150,33 +153,34 @@ class CrearRecetaViewModel : ViewModel() {
             _uiState.update { it.copy(mensajeError = "Por favor completa los campos obligatorios") }
             return
         }
-        
+
         if (state.imageUri == null) {
-             _uiState.update { it.copy(mensajeError = "Debes seleccionar una imagen principal") }
-             return
+            _uiState.update { it.copy(mensajeError = "Debes seleccionar una imagen principal") }
+            return
         }
 
         viewModelScope.launch(Dispatchers.IO) {
+            // Solo activamos isLoading. NO tocamos mensajeExito todavía.
             _uiState.update { it.copy(isLoading = true, mensajeError = null, mensajeExito = null) }
 
             try {
+                android.util.Log.d("CrearReceta", "=== INICIANDO ===")
+
                 // 1. Subir imagen principal
-                _uiState.update { it.copy(isLoading = true, mensajeError = null, mensajeExito = "Subiendo imagen principal...") }
-                
+                android.util.Log.d("CrearReceta", "Paso 1: Subiendo imagen principal...")
                 val filename = UUID.randomUUID().toString()
                 val mainImageRef = storage.reference.child("recipes/$userId/$filename.jpg")
-                
-                // Intento de subida con verificacion basica
+
                 mainImageRef.putFile(state.imageUri).await()
-                
-                // Si llegamos aqui, subio. Ahora obtenemos URL.
                 val mainImageUrl = mainImageRef.downloadUrl.await().toString()
+
+                android.util.Log.d("CrearReceta", "Imagen lista: $mainImageUrl")
 
                 // 2. Subir imágenes extra
                 val extraImageUrls = mutableListOf<String>()
                 if (state.imagenesExtra.isNotEmpty()) {
-                    _uiState.update { it.copy(mensajeExito = "Subiendo imágenes extra...") }
-                    state.imagenesExtra.forEachIndexed { index, uri ->
+                    android.util.Log.d("CrearReceta", "Paso 2: Subiendo extras...")
+                    state.imagenesExtra.forEach { uri ->
                         val extraFilename = UUID.randomUUID().toString()
                         val extraRef = storage.reference.child("recipes/$userId/$extraFilename.jpg")
                         extraRef.putFile(uri).await()
@@ -184,9 +188,8 @@ class CrearRecetaViewModel : ViewModel() {
                     }
                 }
 
-                // 3. Crear objeto Recipe
-                _uiState.update { it.copy(mensajeExito = "Guardando receta...") }
-                
+                // 3. Crear objeto
+                android.util.Log.d("CrearReceta", "Paso 3: Preparando datos...")
                 val recipeId = firestore.collection("recipes").document().id
                 val newRecipe = Recipe(
                     id = recipeId,
@@ -206,11 +209,15 @@ class CrearRecetaViewModel : ViewModel() {
                 )
 
                 // 4. Guardar en Firestore
+                android.util.Log.d("CrearReceta", "Paso 4: Guardando en Firestore...")
                 firestore.collection("recipes").document(recipeId).set(newRecipe).await()
 
-                _uiState.update { 
+                android.util.Log.d("CrearReceta", "=== TERMINADO CON ÉXITO ===")
+
+                // AHORA SÍ, al final de todo, lanzamos el mensaje de éxito para que la pantalla se cierre.
+                _uiState.update {
                     it.copy(
-                        isLoading = false, 
+                        isLoading = false,
                         mensajeExito = "¡Receta guardada con éxito!",
                         titulo = "",
                         descripcion = "",
@@ -220,14 +227,13 @@ class CrearRecetaViewModel : ViewModel() {
                         etiquetas = emptyList(),
                         tiempoPreparacion = null,
                         imagenesExtra = emptyList()
-                    ) 
+                    )
                 }
 
             } catch (e: Exception) {
-                e.printStackTrace()
-                // Mensaje detallado si es de Storage
-                val msg = if (e.message?.contains("does not exist") == true) {
-                    "Error de Storage: El archivo no se encontró tras subirlo. Verifica tus reglas de Firebase Storage."
+                android.util.Log.e("CrearReceta", "ERROR", e)
+                val msg = if (e is CancellationException) {
+                    "Carga cancelada. Intenta de nuevo."
                 } else {
                     "Error al guardar: ${e.message}"
                 }
