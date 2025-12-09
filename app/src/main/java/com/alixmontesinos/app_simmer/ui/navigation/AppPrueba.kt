@@ -14,6 +14,7 @@ import androidx.navigation.navArgument
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -50,7 +51,7 @@ fun AppPrueba(){
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = OtrasRutas.Welcome.route,
+            startDestination = OtrasRutas.SplashScreen2.route,
             modifier = androidx.compose.ui.Modifier.padding(paddingValues)
         ) {
 
