@@ -9,6 +9,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,19 +31,44 @@ import com.alixmontesinos.app_simmer.ui.components.FotoPerfilUniversal
 
 @Composable
 fun RecipeDetailScreen(navController: NavController, recipeId: String) {
-    // NOTE: Replace this with a real ViewModel call
-    val recipe = Recipe(
-        id = "1",
-        title = "Pancakes de Arándanos",
-        author = "Alix Montesinos",
-        imageRes = R.drawable.category_breakfast,
-        time = "30 min",
-        difficulty = "Fácil",
-        calories = "250 kcal",
-        description = "Unos deliciosos pancakes esponjosos perfectos para el desayuno.",
-        ingredients = listOf("2 tazas de harina", "2 huevos", "1 taza de leche", "Arándanos frescos"),
-        steps = listOf("Mezcla los ingredientes secos.", "Bate los huevos y la leche.", "Combina todo y cocina.")
-    )
+    var recipe by remember { mutableStateOf<Recipe?>(null) }
+    var isLoading by remember { mutableStateOf(true) }
+
+    LaunchedEffect(recipeId) {
+        if (recipeId.isNotEmpty()) {
+            com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                .collection("recipes")
+                .document(recipeId)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        recipe = document.toObject(Recipe::class.java)
+                    }
+                    isLoading = false
+                }
+                .addOnFailureListener {
+                    isLoading = false
+                }
+        } else {
+            isLoading = false
+        }
+    }
+
+    if (isLoading) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator(color = Color(0xFFFFC107))
+        }
+    } else if (recipe != null) {
+        RecipeDetailContent(navController, recipe!!)
+    } else {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("No se encontró la receta", color = Color.Gray)
+        }
+    }
+}
+
+@Composable
+fun RecipeDetailContent(navController: NavController, recipe: Recipe) {
 
     Box(modifier = Modifier.fillMaxSize()) {
         // 1. Background Image (Header)

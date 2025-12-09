@@ -3,22 +3,15 @@ package com.alixmontesinos.app_simmer.ui.ViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alixmontesinos.app_simmer.R
-import kotlinx.coroutines.delay
+import com.alixmontesinos.app_simmer.model.Recipe
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObjects
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 data class Category(val name: String, val imageRes: Int)
-
-data class Recipe(
-    val id: Int,
-    val name: String,
-    val description: String,
-    val imageRes: Int,
-    val time: String, // e.g., "30 min"
-    val difficulty: String // e.g., "Fácil"
-)
 
 class HomeViewModel : ViewModel() {
 
@@ -38,6 +31,9 @@ class HomeViewModel : ViewModel() {
 
     private val _selectedDifficulty = MutableStateFlow<String?>(null)
     val selectedDifficulty = _selectedDifficulty.asStateFlow()
+    
+    // Firestore instance
+    private val firestore = FirebaseFirestore.getInstance()
 
     init {
         loadData()
@@ -45,25 +41,29 @@ class HomeViewModel : ViewModel() {
 
     private fun loadData() {
         viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
-            // delay(2000) // Removed artificial delay
             _categories.value = listOf(
-                Category("Cena", R.drawable.user_avatar),
-                Category("Comida", R.drawable.user_avatar),
-                Category("Desayuno", R.drawable.user_avatar),
-                Category("Postres", R.drawable.user_avatar),
-                Category("Snack", R.drawable.user_avatar)
+                Category("Cena", R.drawable.category_breakfast),
+                Category("Comida", R.drawable.category_dinner),
+                Category("Desayuno", R.drawable.category_lunch),
+                Category("Postres", R.drawable.category_dessert),
+                Category("Snack", R.drawable.category_snack)
             )
 
-            _allRecipes.value = listOf(
-                Recipe(1, "Huevito con arroz", "Una pequeña receta...", R.drawable.user_avatar, "15 min", "Fácil"),
-                Recipe(2, "Pollo a la brasa", "Clásico peruano", R.drawable.user_avatar, "1 h", "Media"),
-                Recipe(3, "Lomo Saltado", "Salteado de carne", R.drawable.user_avatar, "30 min", "Media"),
-                Recipe(4, "Causa Limeña", "Plato típico", R.drawable.user_avatar, "45 min", "Difícil"),
-                Recipe(5, "Aji de Gallina", "Cremoso y delicioso", R.drawable.user_avatar, "1 h", "Media"),
-                Recipe(6, "Ceviche", "Pescado fresco marinado", R.drawable.user_avatar, "30 min", "Fácil")
-            )
-            _popularRecipes.value = _allRecipes.value
-            _isLoading.value = false
+            // Fetch from Firestore with real-time updates
+            firestore.collection("recipes")
+                .addSnapshotListener { snapshot, error ->
+                    if (error != null) {
+                        _isLoading.value = false
+                        return@addSnapshotListener
+                    }
+
+                    if (snapshot != null) {
+                        val recipes = snapshot.toObjects(Recipe::class.java)
+                        _allRecipes.value = recipes
+                        _popularRecipes.value = recipes
+                        _isLoading.value = false
+                    }
+                }
         }
     }
 

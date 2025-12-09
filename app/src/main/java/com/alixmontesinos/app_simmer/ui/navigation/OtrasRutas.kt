@@ -16,6 +16,6 @@ sealed class OtrasRutas(val route: String) {
 
     // Ruta de detalle actualizada para aceptar un ID
     object RecipeDetail : OtrasRutas("RecipeDetail/{recipeId}") {
-        fun createRoute(recipeId: Int) = "RecipeDetail/$recipeId"
+        fun createRoute(recipeId: String) = "RecipeDetail/$recipeId"
     }
 }
